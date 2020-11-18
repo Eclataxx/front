@@ -1,10 +1,10 @@
 <template>
   <div class="flex">
     <img src="/images/broken-iphone.jpg">
-    <div>
-      <h3>Smashed iPhone 6</h3>
-      <p>blablabla ajldakzjld azdj l jkl dsjklq djkl</p>
-      <span>123€</span>
+    <div class="flex flex-col text-left pl-2">
+      <h3><slot class="text-lg" name="title"></slot></h3>
+      <p><slot name="description"></slot></p>
+      <span><slot name="price"></slot></span>
     </div>
   </div>
 </template>
