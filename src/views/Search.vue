@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    <Carousel />
-    Home
+    Search
+    <ProductCard />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Carousel from '../components/Carousel.vue';
+import ProductCard from '../components/ProductCard.vue';
 
 @Options({
   components: {
-    Carousel,
+    ProductCard,
   },
 })
 export default class Home extends Vue {}
