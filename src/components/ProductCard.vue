@@ -3,7 +3,7 @@
     flex product-card border border-gray-400 p-4 rounded my-4
     transition duration-300 cursor-pointer
   ">
-    <img src="/images/broken-iphone.jpg">
+    <img src="/images/iphone.jpg">
     <div class="flex flex-col text-left pl-2 w-full">
       <h3 class="font-bold mb-1"><slot class="text-lg" name="title"></slot></h3>
       <div class="text-sm">

@@ -15,10 +15,11 @@
       <router-link to="/search?q=iphone" class="px-8">iPhone</router-link>
       <router-link to="/search?q=ipad" class="px-8">iPad</router-link>
       <router-link to="/search?q=imac" class="px-8">iMac</router-link>
-      <router-link to="/search?q=computers_and_laptops" class="px-8">
+      <router-link to="/search?q=computers%20and%20laptops" class="px-8">
         Computers & Laptops
       </router-link>
       <router-link to="/search?q=phones" class="px-8">Phones</router-link>
+      <router-link to="/search?q=tv" class="px-8">TV</router-link>
     </div>
   </header>
 </template>
