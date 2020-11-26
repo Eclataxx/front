@@ -4,6 +4,7 @@
       <router-link to="/" class="text-2xl">Eclatax</router-link>
       <SearchBar />
       <div>
+        <router-link to="/orders" class="mr-4">Orders</router-link>
         <router-link to="/sign-in" class="mr-4">
           Sign In
         </router-link>
