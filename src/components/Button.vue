@@ -2,8 +2,8 @@
   <RouterLink
     :to="url"
     class="
-      text-sm rounded px-4
-      py-1 transition duration-300 mt-2
+      flex justify-center items-center text-sm
+      rounded px-4 py-1 transition duration-300 mt-2
     ">
     <slot></slot>
   </RouterLink>
