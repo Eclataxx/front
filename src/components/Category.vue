@@ -1,7 +1,7 @@
 <template>
   <router-link :to="`/search?q=${query}`" class="
     flex flex-col category border border-gray-400 bg-white p-4
-    transition duration-300 cursor-pointer mr-1
+    transition duration-300 cursor-pointer mr-1 rounded-sm
   ">
     <div class="img-container">
       <img :src="imageSrc" />

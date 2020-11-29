@@ -58,7 +58,7 @@
         it's our daily life.
       </p>
       <RouterLink to="/search?q=laptops" class="
-        discover text-lg text-gray-900 bg-white rounded px-6 py-2
+        discover text-lg text-gray-900 bg-white rounded-sm px-6 py-2
         transition duration-300 ml-20
       ">
         Explore

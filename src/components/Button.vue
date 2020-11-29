@@ -3,7 +3,7 @@
     :to="url"
     class="
       flex justify-center items-center text-sm
-      rounded px-4 py-1 transition duration-300 mt-2
+      rounded-sm px-4 py-1 transition duration-300 mt-2
     ">
     <slot></slot>
   </RouterLink>

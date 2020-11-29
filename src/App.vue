@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full">
     <Header />
     <main class="container mx-auto"><router-view /></main>
     <Footer class="mt-6" />
@@ -29,5 +29,9 @@ export default class Home extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+main {
+  min-height: calc(100vh - 208px);
 }
 </style>

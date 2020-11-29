@@ -1,6 +1,6 @@
 <template>
   <div class="
-    order-card flex flex-col rounded
+    order-card flex flex-col rounded-sm
     border border-gray-400
   ">
     <div class="flex bg-gray-200 justify-between p-4 text-sm">

@@ -1,6 +1,6 @@
 <template>
   <router-link to="/product" class="
-    flex product-card border border-gray-400 p-4 rounded my-4
+    flex product-card border border-gray-400 p-4 rounded-sm my-4
     transition duration-300 cursor-pointer
   ">
     <img src="/images/iphone.jpg">

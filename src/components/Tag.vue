@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      text-xs rounded bg-gray-900
+      text-xs rounded-sm bg-gray-900
       text-white px-2 py-1 my-1 mr-1
     ">
     <slot></slot>

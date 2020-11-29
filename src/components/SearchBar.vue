@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" class="text-black p-2 rounded" />
+    <input type="text" class="text-black p-2 rounded-sm" />
   </div>
 </template>
 

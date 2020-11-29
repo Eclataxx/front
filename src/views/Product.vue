@@ -1,7 +1,7 @@
 <template>
   <div class="sign-in flex flex-col mt-6">
     <div class="
-      flex border border-gray-400 p-6 rounded bg-white
+      flex border border-gray-400 p-6 rounded-sm bg-white
       justify-between items-start
     ">
       <img src="/images/iphone.jpg">
@@ -38,7 +38,7 @@
       </div>
       <div class="
         buy p-6 flex flex-col text-left
-        border border-gray-400 rounded
+        border border-gray-400 rounded-sm
       ">
         <InfoText>Free shipping</InfoText>
         <InfoText>12 months warranty</InfoText>
@@ -53,7 +53,7 @@
         </Button>
       </div>
     </div>
-    <div class="mt-6 flex border border-gray-400 p-6 rounded bg-white
+    <div class="mt-6 flex border border-gray-400 p-6 rounded-sm bg-white
       justify-between items-center">
       <div class="text-left mx-10">
         <h1 class="text-2xl mb-4">Specifications</h1>

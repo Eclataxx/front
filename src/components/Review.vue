@@ -1,6 +1,6 @@
 <template>
     <div class="
-        text-left bg-white rounded border border-gray-400 new-shadow
+        text-left bg-white rounded-sm border border-gray-400 new-shadow
     ">
         <p class="p-6"><slot></slot></p>
         <hr class="border-t w-full border-gray-400">
