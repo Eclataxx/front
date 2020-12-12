@@ -1,0 +1,19 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Smashed Iphone api-platform",
+      "description": "a smashed Iphone"
+    },
+    {
+      "id": 2,
+      "title": "Smashed McBook api-platform",
+      "description": "a smashed McBook"
+    },
+    {
+      "id": 3,
+      "title": "Super Smashed api-platform",
+      "description": "a super smashed"
+    }
+  ]
+}
