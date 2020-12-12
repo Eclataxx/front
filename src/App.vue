@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <Header />
-    <main class="container mx-auto"><router-view /></main>
+    <main class="container mx-auto px-2 lg:px-0"><router-view /></main>
     <div class="fixed inline-block mr-2 align-middle select-none transition
         duration-200 ease-in toggle-wrapper"
       >

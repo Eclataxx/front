@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <input type="text" class="text-black p-2 rounded-sm" />
-  </div>
+  <input type="text" class="text-black rounded-sm" />
 </template>
 
 <script lang="ts">
@@ -11,7 +9,5 @@ export default class SearchBar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-  input {
-    width: 800px;
-  }
+
 </style>

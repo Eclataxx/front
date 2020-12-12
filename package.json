@@ -1,6 +1,6 @@
 {
-  "name": "vue",
-  "version": "0.1.0",
+  "name": "vue-project",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,6 +17,7 @@
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.0-0",
     "vue-slick-carousel": "^1.0.6",
+    "vuemik": "^1.0.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
