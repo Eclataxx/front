@@ -1,24 +1,9 @@
 <template>
   <div class="search mt-6">
-    <ProductCard v-for="index in 10" :key="index">
-      <template v-slot:title>Smashed iPhone 6</template>
+    <ProductCard v-for="product in products" :key="product">
+      <template v-slot:title>{{ product.title }}</template>
       <template v-slot:description>
-        Consectetur reprehenderit cupidatat in dolor velit ex ea velit fugiat velit nostrud
-        tempor consectetur aliqua. Magna sint officia laboris occaecat deserunt occaecat non
-        occaecat magna laboris in ad occaecat non. Id ad laboris Lorem non. Sunt elit sint dolore
-        officia ad sint.
-        Consectetur reprehenderit cupidatat in dolor velit ex ea velit fugiat velit nostrud
-        tempor consectetur aliqua. Magna sint officia laboris occaecat deserunt occaecat non
-        occaecat magna laboris in ad occaecat non. Id ad laboris Lorem non. Sunt elit sint dolore
-        officia ad sint.
-        Consectetur reprehenderit cupidatat in dolor velit ex ea velit fugiat velit nostrud
-        tempor consectetur aliqua. Magna sint officia laboris occaecat deserunt occaecat non
-        occaecat magna laboris in ad occaecat non. Id ad laboris Lorem non. Sunt elit sint dolore
-        officia ad sint.
-        Consectetur reprehenderit cupidatat in dolor velit ex ea velit fugiat velit nostrud
-        tempor consectetur aliqua. Magna sint officia laboris occaecat deserunt occaecat non
-        occaecat magna laboris in ad occaecat non. Id ad laboris Lorem non. Sunt elit sint dolore
-        officia ad sint.
+        {{ product.description }}
       </template>
       <template v-slot:price>141€</template>
     </ProductCard>
@@ -27,12 +12,22 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { ProductModel } from '../models/product/product.model';
 import ProductCard from '../components/ProductCard.vue';
+import * as axiosService from '../services/axiosMethods';
 
 @Options({
   components: {
     ProductCard,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  products: ProductModel[] = [];
+
+  mounted() {
+    axiosService.get<ProductModel[]>('/products').then((res) => {
+      this.products = res.data;
+    });
+  }
+}
 </script>

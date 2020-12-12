@@ -15,12 +15,23 @@
   "plugins": ["vue", "@typescript-eslint"],
   "rules": {
     "no-console": 0,
-    "no-unused-vars": 0
+    "no-unused-vars": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["src"]
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]
       }
     }
   }
