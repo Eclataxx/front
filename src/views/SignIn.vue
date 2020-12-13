@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-in flex flex-col mt-6">
+  <div class="sign-in flex flex-col pt-16 lg:pt-6">
     <h1>Sign In</h1>
     <router-link to="/sign-up" class="font-bold hover:text-blue-700"
       >Create an account</router-link

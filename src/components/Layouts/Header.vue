@@ -12,7 +12,7 @@
           />
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
-        <SearchBar class="hidden lg:block p-2" style="width:800px" />
+        <SearchBar class="hidden lg:block p-2" style="width:750px" />
         <div class="flex">
           <img
             id="search-trigger"

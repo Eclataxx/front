@@ -1,5 +1,5 @@
 <template>
-  <div class="search mt-6">
+  <div class="search pt-16 lg:pt-6">
     <ProductCard v-for="product in products" :key="product">
       <template v-slot:title>{{ product.title }}</template>
       <template v-slot:description>

@@ -1,8 +1,8 @@
 <template>
   <div
     class="
-      flex justify-between items-center product-in-cart p-4 transition duration-300
-      border border-gray-400 p-6 rounded-sm bg-white mb-4
+      flex justify-between items-start lg:items-center product-in-cart p-4 transition duration-300
+      border border-gray-400 p-6 rounded-sm bg-white mb-4 flex-col lg:flex-row
     "
   >
     <div class="flex items-center">

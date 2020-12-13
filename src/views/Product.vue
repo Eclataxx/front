@@ -1,11 +1,11 @@
 <template>
-  <div class="sign-in flex flex-col mt-6">
+  <div class="sign-in flex flex-col pt-16 lg:pt-6">
     <div class="
-      flex border border-gray-400 p-6 rounded-sm bg-white
-      justify-between items-start
+      flex flex-col lg:flex-row border border-gray-400 p-6 rounded-sm bg-white
+      justify-between items-center lg:items-start
     ">
       <img src="/images/iphone.jpg">
-      <div class="text-left mx-10">
+      <div class="text-left mx-0 my-2 lg:my-0 lg:mx-10">
         <h1 class="text-2xl">iPhone X 64GB - Space Gray Unlocked</h1>
         <div class="flex flex-wrap items-center">
           <Tag>Broken glass</Tag>
@@ -55,7 +55,7 @@
     </div>
     <div class="mt-6 flex border border-gray-400 p-6 rounded-sm bg-white
       justify-between items-center">
-      <div class="text-left mx-10">
+      <div class="text-left mx-0 lg:mx-10">
         <h1 class="text-2xl mb-4">Specifications</h1>
         <div class="text-sm flex flex-wrap justify-start">
           <ProductSpec spec="Release year" value="Early 2014"

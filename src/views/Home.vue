@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home pt-16 lg:pt-0">
     <Carousel />
     <section class="mt-10">
       <h2 class="text-2xl text-left">Featured categories</h2>

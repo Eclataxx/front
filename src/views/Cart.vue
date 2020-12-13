@@ -1,8 +1,8 @@
 <template>
-  <section class="cart mt-6">
+  <section class="cart pt-16 lg:pt-6">
     <h1 class="text-left text-3xl mb-4">Your Cart</h1>
     <div class="flex items-start justify-center">
-      <div class="w-full mr-4 ">
+      <div class="w-full mr-0 lg:mr-4">
         <ProductInCart
           v-for="index in 3"
           :key="index"
@@ -12,7 +12,7 @@
         />
         <Checkout class="flex items-center justify-between" price="300€" items="3" />
       </div>
-      <Checkout class="flex flex-col items-start" price="300€" items="3" />
+      <Checkout class="hidden lg:block flex flex-col items-start" price="300€" items="3" />
     </div>
   </section>
 </template>
