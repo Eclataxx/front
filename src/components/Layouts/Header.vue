@@ -2,17 +2,19 @@
   <header class="text-white">
     <div
       id="nav"
-      class="fixed w-full flex flex-col items-start p-2 bg-gray-900"
+      class="fixed w-full flex flex-col items-start p-2 bg-gray-900 z-20"
     >
       <div class="flex items-center justify-between w-full">
         <div class="flex">
           <img
+            id="burger-icon"
             src="images/menu.svg"
             class="block lg:hidden cursor-pointer mr-2"
+            @click="showSideMenu"
           />
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
-        <SearchBar class="hidden lg:block p-2" style="width:750px" />
+        <SearchBar class="hidden lg:block p-2" style="width:720px" />
         <div class="flex">
           <img
             id="search-trigger"
@@ -37,19 +39,47 @@
       <SearchBar id="responsive-search" placeholder="Rechercher un produit..."
       class="hidden mt-1 px-2 py-1 w-full" />
     </div>
-    <div
-      style="padding-top: 60px"
-      class="p-1 bg-gray-800 flex justify-center hidden lg:block"
-    >
-      <router-link to="/search?q=macbook" class="px-8">MacBook</router-link>
-      <router-link to="/search?q=iphone" class="px-8">iPhone</router-link>
-      <router-link to="/search?q=ipad" class="px-8">iPad</router-link>
-      <router-link to="/search?q=imac" class="px-8">iMac</router-link>
-      <router-link to="/search?q=computers%20and%20laptops" class="px-8">
-        Computers & Laptops
-      </router-link>
-      <router-link to="/search?q=phones" class="px-8">Phones</router-link>
-      <router-link to="/search?q=tv" class="px-8">TV</router-link>
+    <div id="side-menu" @click="showSideMenu" class="hidden z-10
+      absolute lg:static h-full lg:h-auto w-full lg:w-auto bg-black
+      lg:bg-opacity-0 bg-opacity-50 flex lg:block
+    ">
+      <div
+        class="p-0 lg:p-1 bg-gray-900 lg:bg-gray-800 flex justify-start lg:justify-center
+          flex-col lg:flex-row lg:static items-start lg:items-center text-left
+          lg:text-center h-full
+        "
+      >
+        <router-link to="/search?q=macbook" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">MacBook</router-link>
+        <router-link to="/search?q=iphone" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">iPhone</router-link>
+        <router-link to="/search?q=ipad" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">iPad</router-link>
+        <router-link to="/search?q=imac" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">iMac</router-link>
+        <router-link to="/search?q=computers%20and%20laptops" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">
+          Computers & Laptops
+        </router-link>
+        <router-link to="/search?q=phones" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">Phones</router-link>
+        <router-link to="/search?q=tv" class="
+          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
+        ">TV</router-link>
+      </div>
     </div>
   </header>
 </template>
@@ -67,13 +97,35 @@ export default class Header extends Vue {
   showSearchBar(): boolean {
     const searchBar = document.getElementById('responsive-search') as HTMLElement;
     const isHidden = Object.values(searchBar.classList).includes('hidden');
+    const sideMenu = document.getElementById('side-menu') as HTMLElement;
 
     if (!isHidden) {
       searchBar.classList.add('hidden');
+      sideMenu.style.marginTop = '46px';
       return true;
     }
 
     searchBar.classList.remove('hidden');
+    sideMenu.style.marginTop = '82px';
+    return false;
+  }
+
+  showSideMenu(event: { target: EventTarget }): boolean {
+    const sideMenu = document.getElementById('side-menu') as HTMLElement;
+    const isHidden = Object.values(sideMenu.classList).includes('hidden');
+    const icon = document.getElementById('burger-icon') as HTMLImageElement;
+    const html = document.querySelector('html') as HTMLElement;
+
+    if (!isHidden) {
+      sideMenu.classList.add('hidden');
+      html.style.overflow = 'auto';
+      icon.src = 'images/menu.svg';
+      return true;
+    }
+
+    sideMenu.classList.remove('hidden');
+    html.style.overflow = 'hidden';
+    icon.src = 'images/menu_open.svg';
     return false;
   }
 }
@@ -83,5 +135,17 @@ export default class Header extends Vue {
 a:hover {
   color: #ecc94b !important;
   transition: all 0.3s;
+}
+
+#side-menu {
+  margin-top: 46px;
+}
+
+// lg
+@media (min-width: 1024px) {
+  #side-menu {
+    padding-top: 56px;
+    margin-top: 0px;
+  }
 }
 </style>

@@ -72,21 +72,7 @@ export default class Home extends Vue {
   }
 
   main {
-    min-height: calc(100vh - 184px);
-  }
-
-  // sm
-  @media (min-width: 640px) {
-    main {
-      min-height: calc(100vh - 136px);
-    }
-  }
-
-  // lg
-  @media (min-width: 1024px) {
-    main {
-      min-height: calc(100vh - 184px);
-    }
+    min-height: calc(100vh - 136px);
   }
 
   .toggle-wrapper {
