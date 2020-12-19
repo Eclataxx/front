@@ -123,7 +123,6 @@ export default class Header extends Vue {
     const { marginTop } = sideMenu.style;
 
     if (window.innerWidth > 1024 && marginTop !== '') {
-      console.log('ok');
       sideMenu.style.marginTop = '';
       searchBar.classList.add('hidden');
       this.triggerSideMenu(event);
