@@ -1,5 +1,5 @@
 <template>
-  <header class="text-white">
+  <header class="text-white" onresize="resizeHandler()">
     <div
       id="nav"
       class="fixed w-full flex flex-col items-start p-2 bg-gray-900 z-20"
@@ -10,7 +10,7 @@
             id="burger-icon"
             src="images/menu.svg"
             class="block lg:hidden cursor-pointer mr-2"
-            @click="showSideMenu"
+            @click="triggerSideMenu"
           />
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
@@ -37,9 +37,9 @@
         </div>
       </div>
       <SearchBar id="responsive-search" placeholder="Rechercher un produit..."
-      class="hidden mt-1 px-2 py-1 w-full" />
+      class="hidden lg:hidden mt-1 px-2 py-1 w-full" />
     </div>
-    <div id="side-menu" @click="showSideMenu" class="hidden z-10
+    <div id="side-menu" @click="triggerSideMenu" class="hidden z-10
       absolute lg:static h-full lg:h-auto w-full lg:w-auto bg-black
       lg:bg-opacity-0 bg-opacity-50 flex lg:block
     ">
@@ -92,7 +92,14 @@ import SearchBar from '../SearchBar.vue';
   components: {
     SearchBar,
   },
+  beforeMount() {
+    window.addEventListener('resize', this.resizeHandler);
+  },
+  beforeUnmount() {
+    window.removeEventListener('resize', this.resizeHandler);
+  },
 })
+
 export default class Header extends Vue {
   showSearchBar(): boolean {
     const searchBar = document.getElementById('responsive-search') as HTMLElement;
@@ -110,7 +117,20 @@ export default class Header extends Vue {
     return false;
   }
 
-  showSideMenu(event: { target: EventTarget }): boolean {
+  resizeHandler(event: Event) {
+    const sideMenu = document.getElementById('side-menu') as HTMLElement;
+    const searchBar = document.getElementById('responsive-search') as HTMLElement;
+    const { marginTop } = sideMenu.style;
+
+    if (window.innerWidth > 1024 && marginTop !== '') {
+      console.log('ok');
+      sideMenu.style.marginTop = '';
+      searchBar.classList.add('hidden');
+      this.triggerSideMenu(event);
+    }
+  }
+
+  triggerSideMenu(event: Event): boolean {
     const sideMenu = document.getElementById('side-menu') as HTMLElement;
     const isHidden = Object.values(sideMenu.classList).includes('hidden');
     const icon = document.getElementById('burger-icon') as HTMLImageElement;
