@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-up mt-6">
+  <div class="sign-up pt-16 lg:pt-6">
     <h1>Create an account</h1>
     <router-link to="/sign-in" class="font-bold hover:text-blue-700">
       I already have an account

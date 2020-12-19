@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home pt-16 lg:pt-0">
     <Carousel />
     <section class="mt-10">
       <h2 class="text-2xl text-left">Featured categories</h2>
@@ -29,7 +29,10 @@
         <Category query="tv" image-src="/images/tv.jpg" title="TV" />
       </div>
     </section>
-    <section class="bg-white mt-10 p-8 flex justify-between text-left">
+    <section class="
+      bg-white mt-10 p-8 flex justify-between
+      text-left items-center
+    ">
       <div>
         <h1 class="text-3xl font-bold leading-snug">
           Welcome to <span class="font-extrabold">Eclatax</span>,<br>
@@ -48,25 +51,31 @@
           irure occaecat dolor aliquip excepteur.
         </p>
       </div>
-      <img src="/images/broken_device.jpg">
+      <img id="broken-device" class="hidden lg:block" src="/images/broken_device.jpg">
     </section>
 
-    <section class="bg-gray-900 text-white px-20 py-10 mt-20 flex justify-between items-center">
-      <p class="text-left mr-20 text-3xl leading-tight">
+    <section class="
+      bg-gray-900 text-white px-8 py-8 mt-20 flex justify-between items-center
+      flex-col lg:flex-row lg:px-20 lg:py-10
+    ">
+      <p class="text-left mr-0 lg:mr-20 mb-8 lg:mb-0 text-3xl leading-tight">
         Explore our brand new market place, and buy the broken laptop of your dreams!
         Viruses, randsomwares, smashed screens, missing keycaps, corruped hard drives,
         it's our daily life.
       </p>
       <RouterLink to="/search?q=laptops" class="
         discover text-lg text-gray-900 bg-white rounded-sm px-6 py-2
-        transition duration-300 ml-20
+        transition duration-300 ml-0 lg:ml-20
       ">
         Explore
       </RouterLink>
     </section>
 
-    <section class="flex items-start justify-between mt-20">
-      <Review class="mr-4 w-1/3"
+    <section class="
+      flex flex-col items-center justify-between mt-20
+      lg:flex-row lg:items-start
+    ">
+      <Review class="lg:mr-4 mb-4 lg:mb-0 mr-0 w-full lg:w-1/3"
       author="Justin Bieber" job="Web Developer" avatar="/images/justin.png">
         “Excepteur nulla anim ullamco magna. Ad veniam mollit ea nostrud.
         Amet nisi occaecat sunt commodo enim exercitation officia elit deserunt proident.
@@ -74,7 +83,7 @@
         Cupidatat quis consectetur dolore eiusmod enim nulla in consequat sint commodo.
         Ipsum amet adipisicing qui eu labore aute proident.“
       </Review>
-      <Review class="mr-4 w-1/3"
+      <Review class="lg:mr-4 mb-4 lg:mb-0 mr-0 w-full lg:w-1/3"
       author="Armin Kennedy" job="Artist" avatar="/images/armin_kennedy.jpg">
         “Excepteur nulla anim ullamco magna. Ad veniam mollit ea nostrud.
         Quis excepteur est laboris mollit tempor ex ea fugiat tempor occaecat.
@@ -84,7 +93,7 @@
         Ipsum amet adipisicing qui eu labore aute proident.
         Quis excepteur est laboris mollit tempor ex ea fugiat tempor occaecat.“
       </Review>
-      <Review class="w-1/3"
+      <Review class="w-full lg:w-1/3"
       author="Tick Esse" job="Music Producer" avatar="/images/tices.jpg">
         “Excepteur nulla anim ullamco magna. Ad veniam mollit ea nostrud.
         Amet nisi occaecat sunt commodo enim exercitation officia elit deserunt proident.
@@ -126,5 +135,9 @@ export default class Home extends Vue {}
   .discover:hover {
     box-shadow: 0 0.6rem 0.6rem rgba(0,0,0,.1);
     transform: scale(1.1);
+  }
+
+  #broken-device {
+    max-height: 342px;
   }
 </style>

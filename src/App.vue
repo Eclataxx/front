@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <Header />
-    <main class="container mx-auto"><router-view /></main>
+    <main class="container mx-auto px-2 lg:px-0"><router-view /></main>
     <div class="fixed inline-block mr-2 align-middle select-none transition
         duration-200 ease-in toggle-wrapper"
       >
@@ -59,6 +59,7 @@ export default class Home extends Vue {
     window.location.reload();
   }
 }
+
 </script>
 
 <style lang="postcss">
@@ -71,7 +72,7 @@ export default class Home extends Vue {
   }
 
   main {
-    min-height: calc(100vh - 208px);
+    min-height: calc(100vh - 136px);
   }
 
   .toggle-wrapper {

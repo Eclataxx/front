@@ -1,7 +1,9 @@
 <template>
   <div
-    to="/product"
-    class="flex justify-between items-center ordered-product-card p-4 transition duration-300"
+    to="/product" class="
+      flex flex-col lg:flex-row justify-between ordered-product-card
+      p-4 transition duration-300 items-start lg:items-center
+    "
   >
     <div class="flex items-center">
       <img src="/images/iphone.jpg" />
@@ -18,18 +20,12 @@
         <span class="text-gray-600 text-sm"
           >Selled by: <span class="text-black">Tom</span></span
         >
-        <Button
-        to="/product"
-        class="bg-gray-800 hover:bg-gray-700 text-white"
-      >
-        Buy again
-      </Button>
       </div>
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-row lg:flex-col">
       <Button
         to="/product"
-        class="bg-gray-300 hover:bg-gray-400 text-gray-800"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 mr-2 lg:mr-0"
       >
         Issue invoice
       </Button>

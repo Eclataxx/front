@@ -1,5 +1,5 @@
 <template>
-  <div class="orders mt-6">
+  <div class="orders pt-16 lg:pt-6">
     <h1 class="text-left text-3xl mb-4">Your Orders</h1>
     <OrderCard class="mb-4" date="25 novembre 2020" total="40,98" orderId="424-64923413-9323724">
       <OrderedProductCard class="border-t" v-for="index in 2" :key="index">
