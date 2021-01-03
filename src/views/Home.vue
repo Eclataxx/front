@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Carousel from '../components/Carousel.vue';
+import Carousel from '../components/Carousel/index.vue';
 import Category from '../components/Category.vue';
 import Review from '../components/Review.vue';
 
