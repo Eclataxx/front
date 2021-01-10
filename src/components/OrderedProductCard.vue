@@ -23,29 +23,29 @@
       </div>
     </div>
     <div class="flex flex-row lg:flex-col">
-      <Button
+      <CustomButton
         to="/product"
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 mr-2 lg:mr-0"
       >
         Issue invoice
-      </Button>
-      <Button
+      </CustomButton>
+      <CustomButton
         to="/product"
         class="bg-gray-300 hover:bg-gray-400 text-gray-800"
       >
         Confirm receipt
-      </Button>
+      </CustomButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Button from './Button.vue';
+import CustomButton from './CustomButton.vue';
 
 @Options({
   components: {
-    Button,
+    CustomButton,
   },
 })
 
