@@ -1,10 +1,9 @@
 <template>
   <RouterLink
     :to="url"
-    class="
-      flex justify-center items-center text-sm
-      rounded-sm px-4 py-1 transition duration-300 mt-2
-    ">
+    class="flex justify-center items-center text-sm rounded-sm
+    px-4 py-1 transition duration-300"
+  >
     <slot></slot>
   </RouterLink>
 </template>
@@ -17,6 +16,5 @@ import { Options, Vue } from 'vue-class-component';
     url: String,
   },
 })
-
-export default class Button extends Vue {}
+export default class CustomButton extends Vue {}
 </script>

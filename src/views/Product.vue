@@ -43,14 +43,14 @@
         <InfoText>Free shipping</InfoText>
         <InfoText>12 months warranty</InfoText>
         <InfoText>Delivery in 6 business days</InfoText>
-        <Button url="" @click.prevent
+        <CustomButton url="" @click.prevent
           class="
           bg-green-500 hover:bg-green-400 text-white w-64
           text-base py-3 px-2 mt-6
         ">
           <img src="/images/shopping_cart.svg" class="pr-2">
           <span>Ajouter au panier (150€)</span>
-        </Button>
+        </CustomButton>
       </div>
     </div>
     <div class="mt-6 flex border border-gray-400 p-6 rounded-sm bg-white
@@ -69,7 +69,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Tag from '../components/Tag.vue';
-import Button from '../components/Button.vue';
+import CustomButton from '../components/CustomButton.vue';
 import InfoText from '../components/InfoText.vue';
 import ProductSpec from '../components/ProductSpec.vue';
 
@@ -77,7 +77,7 @@ import ProductSpec from '../components/ProductSpec.vue';
   components: {
     InfoText,
     Tag,
-    Button,
+    CustomButton,
     ProductSpec,
   },
 })

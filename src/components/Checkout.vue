@@ -6,13 +6,13 @@
       <h4 class="text-lg">CART TOTAL: {{ price }}</h4>
       <span class="text-sm text-gray-600">{{ items }} items</span>
     </div>
-    <Button
+    <CustomButton
       url=""
       @click.prevent
       class="bg-green-500 hover:bg-green-400 text-white w-64 text-base py-3 px-2"
     >
       <span class="font-bold">Checkout</span>
-    </Button>
+    </CustomButton>
   </div>
 </template>
 

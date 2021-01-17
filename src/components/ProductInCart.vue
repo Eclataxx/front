@@ -20,20 +20,20 @@
       </div>
     </div>
     <div class="flex flex-col">
-      <Button to="/cart" class="bg-gray-300 hover:bg-gray-400 text-gray-800">
+      <CustomButton to="/cart" class="bg-gray-300 hover:bg-gray-400 text-gray-800">
         Remove
-      </Button>
+      </CustomButton>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Button from './Button.vue';
+import CustomButton from './CustomButton.vue';
 
 @Options({
   components: {
-    Button,
+    CustomButton,
   },
   props: {
     price: String,

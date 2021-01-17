@@ -20,7 +20,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import ProductInCart from '../components/ProductInCart.vue';
-import Button from '../components/Button.vue';
+import CustomButton from '../components/CustomButton.vue';
 import Checkout from '../components/Checkout.vue';
 
 @Options({
