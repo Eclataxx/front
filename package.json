@@ -10,7 +10,7 @@
     "db2": "json-server --watch ./backend/prisma.json --port 3005"
   },
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "tailwindcss": "^1.9.6",
     "vue": "^3.0.0",
