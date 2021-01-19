@@ -1,6 +1,6 @@
 <template>
   <div class="home pt-16 lg:pt-0">
-    <Carousel />
+    <Carousel class="mt-5"/>
     <section class="mt-10">
       <h2 class="text-2xl text-left">Featured categories</h2>
       <div class="flex mt-2 overflow-x-hidden overflow-y-none pb-4">
@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Carousel from '../components/Carousel/index.vue';
+import Carousel from '../components/Carousel.vue';
 import Category from '../components/Category.vue';
 import Review from '../components/Review.vue';
 
@@ -128,7 +128,7 @@ import Review from '../components/Review.vue';
     Review,
   },
 })
-export default class Home extends Vue {}
+export default class extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@
   "env": {
     "node": true
   },
-  "extends": ["plugin:vue/essential", "airbnb-base"],
+  "extends": ["plugin:vue/vue3-essential", "airbnb-base"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
