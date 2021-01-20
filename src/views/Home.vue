@@ -111,7 +111,6 @@
         Whoever the fuck said this, November 25<sup>th</sup> 2020
       </span>
     </section>
-
   </div>
 </template>
 

@@ -1,14 +1,15 @@
 <template>
   <div class="carousel place-content-center bg-gray-300 h-full">
-    <transition name="component-fade" mode="out-in">
+    <div class="grid grid-cols-3">
+        <p class="col-span-2 carousel-text">{{ currentItem.alt }}</p>
         <img
-            :alt="currentItem.alt"
-            :src="currentItem.imgSrc"
-            width="400" height="150"
-            class="flex justify-between mx-auto pb-2 transition duration-500 ease-in-out"
-            @click="$router.push(currentItem.to)"
+          :alt="currentItem.alt"
+          :src="currentItem.imgSrc"
+          width="400" height="150"
+          class="flex justify-between mx-auto pb-2 transition duration-500 ease-in-out"
+          @click="$router.push(currentItem.to)"
         />
-    </transition>
+    </div>
 
     <div class="flex justify-between w-24 mx-auto">
       <button
@@ -17,9 +18,9 @@
         @click="goToItem(index)"
         class="rounded-full w-4 pb-2 transition duration-500 ease-in-out"
         :class="{
-            'bg-gray-900': index === currentIndex,
-            'bg-gray-400': index !== currentIndex,
-            }"
+          'bg-gray-900': index === currentIndex,
+          'bg-gray-400': index !== currentIndex,
+        }"
       ></button>
     </div>
   </div>
@@ -74,3 +75,10 @@ export default class Carousel extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.carousel-text {
+  font-weight: 900;
+  font-size: 70px;
+}
+</style>
