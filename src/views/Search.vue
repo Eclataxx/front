@@ -1,33 +1,33 @@
 <template>
-  <div class="search pt-16 lg:pt-6">
-    <ProductCard v-for="product in products" :key="product">
-      <template v-slot:title>{{ product.title }}</template>
-      <template v-slot:description>
-        {{ product.description }}
-      </template>
-      <template v-slot:price>141€</template>
-    </ProductCard>
+  <div v-if="loaded" class="search pt-16 lg:pt-6">
+    <ProductCard v-for="p in products" :key="p.id" :product="p" />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { ProductModel } from '../models/product/product.model';
+import { ProductModel } from '../models';
 import ProductCard from '../components/ProductCard.vue';
 import * as axiosService from '../services/axiosMethods';
+import Product from './Product.vue';
 
 @Options({
   components: {
     ProductCard,
   },
 })
-export default class Home extends Vue {
+export default class Search extends Vue {
   products: ProductModel[] = [];
 
-  mounted() {
-    axiosService.get<ProductModel[]>('/products').then((res) => {
-      this.products = res.data;
-    });
+  loaded: boolean = false;
+
+  created() {
+    axiosService
+      .get<{ 'hydra:member': ProductModel[] }>('/products')
+      .then((res) => {
+        this.products = res.data['hydra:member'];
+        this.loaded = true;
+      });
   }
 }
 </script>

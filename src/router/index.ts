@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/product',
+    path: '/products/:id',
     name: 'Product',
     components: {
       default: Product,

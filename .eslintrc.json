@@ -27,7 +27,9 @@
         "tsx": "never"
       }
     ],
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-extra-semi": "off",
+    "semi": "off"
   },
   "settings": {
     "import/resolver": {

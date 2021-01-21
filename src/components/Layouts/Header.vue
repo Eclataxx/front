@@ -14,7 +14,7 @@
           />
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
-        <SearchBar class="hidden lg:block p-2" style="width:720px" />
+        <SearchBar class="hidden lg:block p-2" style="width: 720px" />
         <div class="flex">
           <img
             id="search-trigger"
@@ -36,49 +36,66 @@
           </router-link>
         </div>
       </div>
-      <SearchBar id="responsive-search" placeholder="Rechercher un produit..."
-      class="hidden lg:hidden mt-1 px-2 py-1 w-full" />
+      <SearchBar
+        id="responsive-search"
+        placeholder="Rechercher un produit..."
+        class="hidden lg:hidden mt-1 px-2 py-1 w-full"
+      />
     </div>
-    <div id="side-menu" @click="triggerSideMenu" class="hidden z-10
-      absolute lg:static h-full lg:h-auto w-full lg:w-auto bg-black
-      lg:bg-opacity-0 bg-opacity-50 flex lg:block
-    ">
+    <div
+      id="side-menu"
+      @click="triggerSideMenu"
+      class="hidden z-10 absolute lg:static h-full lg:h-auto w-full
+      lg:w-auto bg-black lg:bg-opacity-0 bg-opacity-50 flex lg:block"
+    >
       <div
-        class="p-0 lg:p-1 bg-gray-900 lg:bg-gray-800 flex justify-start lg:justify-center
-          flex-col lg:flex-row lg:static items-start lg:items-center text-left
-          lg:text-center h-full
-        "
+        class="p-0 lg:p-1 bg-gray-900 lg:bg-gray-800 flex justify-start
+        lg:justify-center flex-col lg:flex-row lg:static items-start
+        lg:items-center text-left lg:text-center h-full"
       >
-        <router-link to="/search?q=macbook" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">MacBook</router-link>
-        <router-link to="/search?q=iphone" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">iPhone</router-link>
-        <router-link to="/search?q=ipad" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">iPad</router-link>
-        <router-link to="/search?q=imac" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">iMac</router-link>
-        <router-link to="/search?q=computers%20and%20laptops" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">
+        <router-link
+          to="/search?q=macbook"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >MacBook</router-link
+        >
+        <router-link
+          to="/search?q=iphone"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >iPhone</router-link
+        >
+        <router-link
+          to="/search?q=ipad"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >iPad</router-link
+        >
+        <router-link
+          to="/search?q=imac"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >iMac</router-link
+        >
+        <router-link
+          to="/search?q=computers%20and%20laptops"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+        >
           Computers & Laptops
         </router-link>
-        <router-link to="/search?q=phones" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">Phones</router-link>
-        <router-link to="/search?q=tv" class="
-          w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300
-        ">TV</router-link>
+        <router-link
+          to="/search?q=phones"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >Phones</router-link
+        >
+        <router-link
+          to="/search?q=tv"
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          >TV</router-link
+        >
       </div>
     </div>
   </header>
@@ -99,10 +116,11 @@ import SearchBar from '../SearchBar.vue';
     window.removeEventListener('resize', this.resizeHandler);
   },
 })
-
 export default class Header extends Vue {
   showSearchBar(): boolean {
-    const searchBar = document.getElementById('responsive-search') as HTMLElement;
+    const searchBar = document.getElementById(
+      'responsive-search',
+    ) as HTMLElement;
     const isHidden = Object.values(searchBar.classList).includes('hidden');
     const sideMenu = document.getElementById('side-menu') as HTMLElement;
 
@@ -119,7 +137,9 @@ export default class Header extends Vue {
 
   resizeHandler(event: Event) {
     const sideMenu = document.getElementById('side-menu') as HTMLElement;
-    const searchBar = document.getElementById('responsive-search') as HTMLElement;
+    const searchBar = document.getElementById(
+      'responsive-search',
+    ) as HTMLElement;
     const { marginTop } = sideMenu.style;
 
     if (window.innerWidth > 1024 && marginTop !== '') {
@@ -130,21 +150,24 @@ export default class Header extends Vue {
   }
 
   triggerSideMenu(event: Event): boolean {
-    const sideMenu = document.getElementById('side-menu') as HTMLElement;
-    const isHidden = Object.values(sideMenu.classList).includes('hidden');
-    const icon = document.getElementById('burger-icon') as HTMLImageElement;
-    const html = document.querySelector('html') as HTMLElement;
+    if (window.innerWidth <= 1024) {
+      const sideMenu = document.getElementById('side-menu') as HTMLElement;
+      const isHidden = Object.values(sideMenu.classList).includes('hidden');
+      const icon = document.getElementById('burger-icon') as HTMLImageElement;
+      const html = document.querySelector('html') as HTMLElement;
 
-    if (!isHidden) {
-      sideMenu.classList.add('hidden');
-      html.style.overflow = 'auto';
-      icon.src = 'images/menu.svg';
-      return true;
+      if (!isHidden) {
+        sideMenu.classList.add('hidden');
+        html.style.overflow = 'auto';
+        icon.src = 'images/menu.svg';
+        return true;
+      }
+
+      sideMenu.classList.remove('hidden');
+      html.style.overflow = 'hidden';
+      icon.src = 'images/menu_open.svg';
+      return false;
     }
-
-    sideMenu.classList.remove('hidden');
-    html.style.overflow = 'hidden';
-    icon.src = 'images/menu_open.svg';
     return false;
   }
 }

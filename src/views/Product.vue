@@ -1,40 +1,23 @@
 <template>
   <div class="sign-in flex flex-col pt-16 lg:pt-6">
-    <div class="
+    <div v-if="loaded" class="
       flex flex-col lg:flex-row border border-gray-400 p-6 rounded-sm bg-white
       justify-between items-center lg:items-start
     ">
       <img src="/images/iphone.jpg">
       <div class="text-left mx-0 my-2 lg:my-0 lg:mx-10">
-        <h1 class="text-2xl">iPhone X 64GB - Space Gray Unlocked</h1>
-        <div class="flex flex-wrap items-center">
-          <Tag>Broken glass</Tag>
-          <Tag>Working OS</Tag>
-        </div>
+        <h1 class="text-2xl">{{ product.name }}</h1>
         <div class="my-1">
           <span class="font-bold">Price: </span>
-          <span class="font-bold text-2xl">150€</span>
-          <span class="line-through text-xl text-gray-500 pl-3">1000€</span>
+          <span class="font-bold text-2xl">{{ product.price }}€</span>
         </div>
         <p class="my-1">
           <span class="font-bold">Seller notes:</span>
-          Occaecat commodo sit incididunt ipsum ex deserunt laboris.
-          Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea.
-          Consequat nisi irure anim labore qui labore aute. Commodo qui ut
-          irure veniam dolor enim enim consectetur velit occaecat cillum
-          officia eu.
-          Occaecat commodo sit incididunt ipsum ex deserunt laboris.
-          Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea.
-          Consequat nisi irure anim labore qui labore aute. Commodo qui ut
-          irure veniam dolor enim enim consectetur velit occaecat cillum
-          officia eu.
-          Occaecat commodo sit incididunt ipsum ex deserunt laboris.
-          Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea.
-          Consequat nisi irure anim labore qui labore aute. Commodo qui ut
-          irure veniam dolor enim enim consectetur velit occaecat cillum
-          officia eu.
+          {{ product.description }}
         </p>
-        <div class="my-1"><span class="font-bold">Selled by: </span>Tom</div>
+        <div class="my-1"><span class="font-bold">Selled by: </span>
+          {{ product.submittedBy.username }}
+        </div>
       </div>
       <div class="
         buy p-6 flex flex-col text-left
@@ -49,7 +32,7 @@
           text-base py-3 px-2 mt-6
         ">
           <img src="/images/shopping_cart.svg" class="pr-2">
-          <span>Ajouter au panier (150€)</span>
+          <span>Ajouter au panier ({{ product.price }}€)</span>
         </CustomButton>
       </div>
     </div>
@@ -72,6 +55,8 @@ import Tag from '../components/Tag.vue';
 import CustomButton from '../components/CustomButton.vue';
 import InfoText from '../components/InfoText.vue';
 import ProductSpec from '../components/ProductSpec.vue';
+import * as axiosService from '../services/axiosMethods';
+import { ProductModel } from '../models';
 
 @Options({
   components: {
@@ -81,7 +66,20 @@ import ProductSpec from '../components/ProductSpec.vue';
     ProductSpec,
   },
 })
-export default class Product extends Vue {}
+export default class Product extends Vue {
+  product: ProductModel | null = null;
+
+  loaded: boolean = false;
+
+  created() {
+    axiosService
+      .get<ProductModel>(`/products/${this.$route.params.id}`)
+      .then((res) => {
+        this.product = res.data;
+        this.loaded = true;
+      });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
