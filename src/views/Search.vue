@@ -9,7 +9,6 @@ import { Options, Vue } from 'vue-class-component';
 import { ProductModel } from '../models';
 import ProductCard from '../components/ProductCard.vue';
 import * as axiosService from '../services/axiosMethods';
-import Product from './Product.vue';
 
 @Options({
   components: {

@@ -15,25 +15,34 @@
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
         <SearchBar class="hidden lg:block p-2" style="width: 720px" />
-        <div class="flex">
+        <div class="flex items-center">
           <img
             id="search-trigger"
             src="images/search.svg"
-            class="block lg:hidden cursor-pointer"
+            class="block lg:hidden cursor-pointer mr-2"
             @click="showSearchBar"
           />
-          <router-link to="/orders" class="mr-2 lg:mr-4">
+          <div v-if="user" class="flex items-center mr-2 lg:mr-4">
+            <img src="images/justin.png" width="32" class="rounded-full mr-2"/>
+            <span class="hidden lg:block">{{ user.email }}</span>
+          </div>
+          <router-link v-if="user" to="/orders" class="mr-2 lg:mr-4">
             <span class="hidden lg:block">Orders</span>
-            <!-- <img class="block lg:hidden" src="images/shopping_bag.svg"> -->
+            <img class="block lg:hidden" src="images/shopping_bag.svg">
           </router-link>
-          <router-link to="/sign-in" class="mr-2 lg:mr-4">
+          <router-link v-if="!user" to="/sign-in" class="mr-2 lg:mr-4">
             <span class="hidden lg:block">Sign In</span>
             <img class="block lg:hidden" src="images/account_circle.svg" />
           </router-link>
-          <router-link to="/cart" class="mr-2 lg:mr-4">
+          <router-link v-if="user" to="/cart" class="mr-2 lg:mr-4">
             <span class="hidden lg:block">Cart</span>
             <img class="block lg:hidden" src="images/shopping_cart.svg" />
           </router-link>
+          <div v-if="user" @click="logout"
+          class="mr-2 lg:mr-4 cursor-pointer hover:text-yellow-400">
+            <span class="hidden lg:block">Logout</span>
+            <img class="block lg:hidden" src="images/exit.svg" />
+          </div>
         </div>
       </div>
       <SearchBar
@@ -103,7 +112,10 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapGetters } from 'vuex';
+import * as axiosService from '../../services/axiosMethods';
 import SearchBar from '../SearchBar.vue';
+import { UserModel } from '../../models';
 
 @Options({
   components: {
@@ -115,8 +127,26 @@ import SearchBar from '../SearchBar.vue';
   beforeUnmount() {
     window.removeEventListener('resize', this.resizeHandler);
   },
+  computed: {
+    ...mapGetters(['user']),
+  },
 })
 export default class Header extends Vue {
+  async created() {
+    axiosService.whoIsLoggedIn().then((res) => {
+      if (res) {
+        const userData: UserModel = res.data;
+        this.$store.dispatch('user', userData);
+      }
+    });
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwt');
+    this.$store.dispatch('user', null);
+    this.$router.push('/');
+  }
+
   showSearchBar(): boolean {
     const searchBar = document.getElementById(
       'responsive-search',
