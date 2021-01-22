@@ -14,7 +14,7 @@
           </h3>
         </router-link>
         <span class="text-gray-600 text-sm mb-1"
-          >Selled by: <span class="text-black">{{ seller }}</span></span
+          >Selled by: <span class="text-blue-900">{{ seller }}</span></span
         >
         <span class="text-xl">{{ price }}</span>
       </div>

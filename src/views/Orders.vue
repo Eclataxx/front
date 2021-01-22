@@ -7,6 +7,7 @@
       <OrderedProductCard class="border-t"
       v-for="p in order.products" :key="p.id" :product="p" />
     </OrderCard>
+    <p v-if="!orders.length" class="text-left">No orders, yet.</p>
   </div>
 </template>
 
@@ -14,7 +15,7 @@
 import { Options, Vue } from 'vue-class-component';
 import OrderedProductCard from '../components/OrderedProductCard.vue';
 import OrderCard from '../components/OrderCard.vue';
-import { OrderModel } from '../models';
+import { UserModel, OrderModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
 
 @Options({
@@ -30,9 +31,9 @@ export default class Home extends Vue {
 
   created() {
     axiosService
-      .get<{ 'hydra:member': OrderModel[] }>('/orders')
+      .get<UserModel>(`/users/${this.$store.state.user.id}`)
       .then((res) => {
-        this.orders = res.data['hydra:member'];
+        this.orders = res.data.orders;
         this.loaded = true;
       });
   }

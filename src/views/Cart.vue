@@ -12,7 +12,7 @@
         />
         <Checkout class="flex items-center justify-between" price="300€" items="3" />
       </div>
-      <Checkout class="hidden lg:block flex flex-col items-start" price="300€" items="3" />
+      <Checkout class="hidden lg:block text-left w-64" price="300€" items="3" />
     </div>
   </section>
 </template>
@@ -20,7 +20,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import ProductInCart from '../components/ProductInCart.vue';
-import CustomButton from '../components/CustomButton.vue';
 import Checkout from '../components/Checkout.vue';
 
 @Options({

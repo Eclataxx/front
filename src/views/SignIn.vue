@@ -71,7 +71,6 @@ export default class SignIn extends Vue {
         const data = res.data as TokenModel;
         localStorage.setItem('jwt', data.token);
         const response = await axiosService.whoIsLoggedIn();
-        console.log(response);
         if (response) {
           this.$store.dispatch('user', response.data);
           this.$router.push('/');

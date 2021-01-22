@@ -17,7 +17,7 @@
           {{ product.price }}€
         </div>
         <span class="text-gray-600 text-sm"
-          >Selled by: <span class="text-black">{{ product.submittedBy.username }}</span></span
+          >Selled by: <span class="text-blue-900">{{ product.submittedBy.username }}</span></span
         >
       </div>
     </div>

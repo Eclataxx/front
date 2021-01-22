@@ -132,15 +132,6 @@ import { UserModel } from '../../models';
   },
 })
 export default class Header extends Vue {
-  async created() {
-    axiosService.whoIsLoggedIn().then((res) => {
-      if (res) {
-        const userData: UserModel = res.data;
-        this.$store.dispatch('user', userData);
-      }
-    });
-  }
-
   logout(): void {
     localStorage.removeItem('jwt');
     this.$store.dispatch('user', null);

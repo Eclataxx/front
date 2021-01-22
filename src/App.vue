@@ -1,5 +1,5 @@
 <template>
-  <div id="app-container">
+  <div v-if="loaded" id="app-container">
     <router-view name="header" />
     <main class="container mx-auto px-2 lg:px-0"><router-view /></main>
     <div
@@ -27,9 +27,9 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import * as axiosService from './services/axiosMethods';
+import { UserModel } from './models';
 import SearchBar from './components/SearchBar.vue';
-import Header from './components/Layouts/Header.vue';
-import Footer from './components/Layouts/Footer.vue';
 
 type localStorageApiValues = 'api1' | 'api2' | null;
 
@@ -39,8 +39,20 @@ type localStorageApiValues = 'api1' | 'api2' | null;
   },
 })
 export default class Home extends Vue {
+  loaded: boolean = false;
+
   api: localStorageApiValues =
     (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api1';
+
+  async beforeCreate() {
+    const response = await axiosService.whoIsLoggedIn()
+
+    if (response) {
+      const userData: UserModel = response.data;
+      this.$store.dispatch('user', userData);
+      this.loaded = true;
+    }
+  }
 
   mounted() {
     if (localStorage.getItem('apiUrl')) {
