@@ -17,9 +17,9 @@
         <Category query="ipad" image-src="/images/ipad.jpg" title="iPad" />
         <Category query="imac" image-src="/images/imac.jpg" title="iMac" />
         <Category
-          query="computers%20and%20laptops"
+          query="computers"
           image-src="/images/computer.jpg"
-          title="Computers & Laptops"
+          title="Computers"
         />
         <Category
           query="phones"

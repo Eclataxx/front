@@ -32,6 +32,7 @@ import * as axiosService from '../services/axiosMethods';
     Checkout,
   },
 })
+
 export default class Cart extends Vue {
   cart: CartModel | null = null;
 
@@ -41,7 +42,6 @@ export default class Cart extends Vue {
     const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
     if (response) {
       this.cart = response.data.cart;
-      console.log(response.data)
       this.loaded = true;
     }
   }

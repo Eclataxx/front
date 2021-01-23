@@ -14,7 +14,7 @@
           />
           <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
         </div>
-        <SearchBar class="hidden lg:block p-2" style="width: 720px" />
+        <SearchBar id="search-bar" class="hidden lg:block p-2" style="width: 720px" />
         <div class="flex items-center">
           <img
             id="search-trigger"
@@ -92,11 +92,11 @@
           >iMac</router-link
         >
         <router-link
-          to="/search?q=computers%20and%20laptops"
+          to="/search?q=computers"
           class="w-full lg:w-auto border-b lg:border-b-0 py-2
           border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
         >
-          Computers & Laptops
+          Computers
         </router-link>
         <router-link
           to="/search?q=phones"
@@ -135,8 +135,31 @@ import { UserModel } from '../../models';
   computed: {
     ...mapGetters(['user']),
   },
+  watch: {
+    $route(to, from) {
+      const { q: name } = this.$route.query;
+      if ((name && typeof name === 'string') || name === undefined) {
+        const searchBar = document.getElementById('search-bar') as HTMLInputElement;
+        const responsiveSearch = document.getElementById('responsive-search') as HTMLInputElement;
+
+        searchBar.value = name || '';
+        responsiveSearch.value = name || '';
+      }
+    },
+  },
 })
 export default class Header extends Vue {
+  mounted(): void {
+    const { q: name } = this.$route.query;
+    if (name && typeof name === 'string') {
+      const searchBar = document.getElementById('search-bar') as HTMLInputElement;
+      const responsiveSearch = document.getElementById('responsive-search') as HTMLInputElement;
+
+      searchBar.value = name;
+      responsiveSearch.value = name;
+    }
+  }
+
   logout(): void {
     localStorage.removeItem('jwt');
     this.$store.dispatch('user', null);
