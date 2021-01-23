@@ -17,6 +17,12 @@ export default createStore({
     user(context, user) {
       context.commit('user', user)
     },
+    logout(context) {
+      context.commit('user', null);
+      if (localStorage.getItem('jwt')) {
+        localStorage.removeItem('jwt');
+      }
+    },
   },
   modules: {
   },

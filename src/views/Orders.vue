@@ -29,13 +29,12 @@ export default class Home extends Vue {
 
   loaded: boolean = false;
 
-  created() {
-    axiosService
-      .get<UserModel>(`/users/${this.$store.state.user.id}`)
-      .then((res) => {
-        this.orders = res.data.orders;
-        this.loaded = true;
-      });
+  async created() {
+    const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
+    if (response) {
+      this.orders = response.data.orders;
+      this.loaded = true;
+    }
   }
 }
 </script>

@@ -1,7 +1,10 @@
 <template>
   <div v-if="loaded" id="app-container">
     <router-view name="header" />
-    <main class="container mx-auto px-2 lg:px-0"><router-view /></main>
+    <main class="container mx-auto px-2 lg:px-0">
+      <AppError v-if="error" class="m-10" />
+      <router-view v-else />
+    </main>
     <div
       class="fixed inline-block mr-2 align-middle select-none
       transition duration-200 ease-in toggle-wrapper z-50"
@@ -29,6 +32,7 @@
 import { Options, Vue } from 'vue-class-component';
 import * as axiosService from './services/axiosMethods';
 import { UserModel } from './models';
+import AppError from './components/AppError.vue';
 import SearchBar from './components/SearchBar.vue';
 
 type localStorageApiValues = 'api1' | 'api2' | null;
@@ -36,22 +40,38 @@ type localStorageApiValues = 'api1' | 'api2' | null;
 @Options({
   components: {
     SearchBar,
+    AppError,
+  },
+  watch: {
+    $route(to, from) {
+      this.error = false;
+    },
   },
 })
-export default class Home extends Vue {
+
+export default class App extends Vue {
+  error: boolean = false;
+
   loaded: boolean = false;
 
   api: localStorageApiValues =
-    (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api1';
+    (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api1'
 
   async beforeCreate() {
-    const response = await axiosService.whoIsLoggedIn()
+    const response = await axiosService.whoIsLoggedIn();
+    const userData = response ? response.data : null;
+    this.$store.dispatch('user', userData);
+    this.loaded = true;
+  }
 
-    if (response) {
-      const userData: UserModel = response.data;
-      this.$store.dispatch('user', userData);
-      this.loaded = true;
-    }
+  errorCaptured(err: Error, instance: App, info: string): boolean {
+    this.error = true;
+    console.log('=============== ERROR CAPTURED ===============');
+    console.log(err);
+    console.log(instance);
+    console.log(info);
+    console.log('==============================================');
+    return false;
   }
 
   mounted() {
