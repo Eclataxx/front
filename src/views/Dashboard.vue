@@ -8,11 +8,12 @@
         Requests for sale
       </div>
       <div
+        v-if="loaded"
         to="/product"
         class="flex flex-col justify-between
         ordered-product-card p-4 transition duration-300 items-start border-t"
       >
-        <span class="text-sm mb-2 text-gray-600">Showing 17 entries</span>
+        <span class="text-sm mb-2 text-gray-600">Showing {{ products.length }} entries</span>
         <table class="border-collapse text-sm">
           <thead>
             <tr>
@@ -25,28 +26,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="index in 17" :key="index" class="hover:bg-gray-100">
+            <tr v-if="!products.length">
+              <td colspan="6" class="text-center">Nothing to show.</td>
+            </tr>
+            <tr v-for="product in products" :key="product.id" class="hover:bg-gray-100">
               <td><img src="/images/iphone.jpg" /></td>
-              <td>iPhone X 64GB - Space Gray Unlocked</td>
-              <td>150</td>
-              <td>Tom</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.submittedBy.username }}</td>
               <!-- eslint-disable-next-line max-len -->
-              <td title="Occaecat commodo sit incididunt ipsum ex deserunt laboris. Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea. Consequat nisi irure anim labore qui labore aute. Commodo qui ut irure veniam dolor enim enim consectetur velit occaecat cillum officia eu. Occaecat commodo sit incididunt ipsum ex deserunt laboris. Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea. Consequat nisi irure anim labore qui labore aute. Commodo qui ut irure veniam dolor enim enim consectetur velit occaecat cillum officia eu. Occaecat commodo sit incididunt ipsum ex deserunt laboris. Nulla velit nulla aliqua ut aliquip ut consectetur excepteur ea. Consequat nisi irure anim labore qui labore aute. Commodo qui ut irure veniam dolor enim enim consectetur velit occaecat cillum officia eu."
-                class="seller-note"
-              >
-                <span>Occaecat commodo sit incididunt ipsum ex deserunt laboris. Nulla
-                velit nulla aliqua ut aliquip ut consectetur excepteur ea.
-                Consequat nisi irure anim labore qui labore aute. Commodo qui ut
-                irure veniam dolor enim enim consectetur velit occaecat cillum
-                officia eu. Occaecat commodo sit incididunt ipsum ex deserunt
-                laboris. Nulla velit nulla aliqua ut aliquip ut consectetur
-                excepteur ea. Consequat nisi irure anim labore qui labore aute.
-                Commodo qui ut irure veniam dolor enim enim consectetur velit
-                occaecat cillum officia eu. Occaecat commodo sit incididunt
-                ipsum ex deserunt laboris. Nulla velit nulla aliqua ut aliquip
-                ut consectetur excepteur ea. Consequat nisi irure anim labore
-                qui labore aute. Commodo qui ut irure veniam dolor enim enim
-                consectetur velit occaecat cillum officia eu.</span>
+              <td :title="product.description" class="seller-note">
+                <span>{{ product.description }}</span>
               </td>
               <td>
                 <div class="flex justify-between">
@@ -77,13 +67,28 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import CustomButton from '../components/CustomButton.vue';
+import * as axiosService from '../services/axiosMethods';
+import { ProductModel } from '../models';
 
 @Options({
   components: {
     CustomButton,
   },
 })
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue {
+  products: ProductModel[] = [];
+
+  loaded: boolean = false;
+
+  created() {
+    axiosService
+      .get<{ 'hydra:member': ProductModel[] }>('/products')
+      .then((res) => {
+        this.products = res.data['hydra:member'];
+        this.loaded = true;
+      });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

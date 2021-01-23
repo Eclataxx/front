@@ -13,10 +13,12 @@
             <span class="text-lg">{{ title }}</span>
           </h3>
         </router-link>
-        <span class="text-gray-600 text-sm mb-1"
-          >Selled by: <span class="text-blue-900">{{ seller }}</span></span
-        >
-        <span class="text-xl">{{ price }}</span>
+        <span class="text-gray-600 text-sm">
+          Selled by: <span class="text-blue-900">{{ seller }}</span>
+        </span>
+        <span class="text-sm text-gray-600">
+          Price: <span class="text-blue-900">{{ price }}€</span>
+        </span>
       </div>
     </div>
     <div class="flex flex-col">

@@ -38,6 +38,11 @@
             <span class="hidden lg:block">Cart</span>
             <img class="block lg:hidden" src="images/shopping_cart.svg" />
           </router-link>
+          <router-link v-if="user && user.roles.includes('ROLE_ADMIN')"
+          to="/admin/dashboard" class="mr-2 lg:mr-4">
+            <span class="hidden lg:block">Dashboard</span>
+            <img class="block lg:hidden" src="images/shopping_cart.svg" />
+          </router-link>
           <div v-if="user" @click="logout"
           class="mr-2 lg:mr-4 cursor-pointer hover:text-yellow-400">
             <span class="hidden lg:block">Logout</span>
