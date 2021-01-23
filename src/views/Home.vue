@@ -63,7 +63,7 @@
         Viruses, randsomwares, smashed screens, missing keycaps, corruped hard drives,
         it's our daily life.
       </p>
-      <RouterLink to="/search?q=laptops" class="
+      <RouterLink to="/search" class="
         discover text-lg text-gray-900 bg-white rounded-sm px-6 py-2
         transition duration-300 ml-0 lg:ml-20
       ">
