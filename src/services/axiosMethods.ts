@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
+import jwtDecode from 'jwt-decode';
 import router from '../router';
 import store from '../store';
 import getBackendUrl from '../lib/BackendUrl';
@@ -46,7 +47,7 @@ export async function whoIsLoggedIn(config?: AxiosRequestConfig):
   if (!jwt) {
     return null;
   }
-  const jwtPayload: UserModel = JSON.parse(Buffer.from(jwt.split('.')[1], 'base64').toString('ascii'));
+  const jwtPayload: UserModel = jwtDecode(jwt);
   return get<UserModel>(`/users/${jwtPayload.id}`, config);
 }
 

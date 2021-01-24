@@ -1,12 +1,12 @@
 <template>
-  <div class="carousel place-content-center bg-gray-300 h-full">
-    <div class="grid grid-cols-3">
+  <div class="carousel place-content-center bg-gray-300 cursor-pointer">
+    <div class="grid grid-cols-3 pt-2 pr-2 items-center">
         <p class="col-span-2 carousel-text">{{ currentItem.alt }}</p>
         <img
           :alt="currentItem.alt"
           :src="currentItem.imgSrc"
           width="400" height="150"
-          class="flex justify-between mx-auto pb-2 transition duration-500 ease-in-out"
+          class="flex justify-between mx-auto"
           @click="$router.push(currentItem.to)"
         />
     </div>
@@ -49,7 +49,7 @@ export default class Carousel extends Vue {
   ]
 
   mounted() {
-    this.interval = setInterval(() => this.next(), 5 * 1000);
+    this.interval = window.setInterval(() => this.next(), 5 * 1000);
   }
 
   get currentItem() {
@@ -57,21 +57,17 @@ export default class Carousel extends Vue {
   }
 
   public next() {
-    clearInterval(this.interval);
     this.currentIndex = (this.currentIndex + 1) % this.items.length;
-    this.interval = setInterval(() => this.next(), 5 * 1000);
   }
 
   public prev() {
-    clearInterval(this.interval);
-    this.interval = setInterval(() => this.next(), 5 * 1000);
     this.currentIndex = (this.currentIndex ? this.currentIndex : this.items.length) - 1;
   }
 
   public goToItem(n: number) {
-    clearInterval(this.interval);
+    window.clearInterval(this.interval);
     this.currentIndex = n;
-    this.interval = setInterval(() => this.next(), 5 * 1000);
+    this.interval = window.setInterval(() => this.next(), 5 * 1000);
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loaded" id="app-container">
+  <div id="app-container">
     <router-view name="header" />
     <main class="container mx-auto px-2 lg:px-0">
       <AppError v-if="error" class="m-10" />
