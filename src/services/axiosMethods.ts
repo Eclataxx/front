@@ -69,18 +69,20 @@ export async function remove<T>(
 
 export async function put<T>(
   path: string,
+  body: T,
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<any>> {
   const backendUrl = await getBackendUrl();
-  return axios.put(`${backendUrl}${path}`, config || defaultConfig(path, 'PUT'));
+  return axios.put(`${backendUrl}${path}`, body, config || defaultConfig(path, 'PUT'));
 }
 
 export async function patch<T>(
   path: string,
+  body: T,
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<any>> {
   const backendUrl = await getBackendUrl();
-  return axios.patch(`${backendUrl}${path}`, config || defaultConfig(path, 'PATCH'));
+  return axios.patch(`${backendUrl}${path}`, body, config || defaultConfig(path, 'PATCH'));
 }
 
 axios.interceptors.response.use(

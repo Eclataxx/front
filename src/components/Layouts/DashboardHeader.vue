@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed w-full flex items-center bg-gray-900 z-20 text-white"
+    class="dashboard-header fixed w-full flex items-center bg-gray-900 z-20 text-white"
     onresize="resizeHandler()"
   >
     <div class="flex items-center justify-between w-full px-2">
@@ -34,7 +34,7 @@ export default class DashboardHeader extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-header {
+.dashboard-header {
   height: 3rem;
 }
 

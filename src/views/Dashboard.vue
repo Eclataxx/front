@@ -5,22 +5,23 @@
       class="order-card flex flex-col rounded-sm border border-gray-400 mb-4"
     >
       <div class="flex bg-gray-200 justify-between p-4 font-bold">
-        Requests for sale
+        Product list
       </div>
       <div
         class="flex flex-col justify-between
         ordered-product-card p-4 transition duration-300 items-start border-t"
       >
         <span class="text-sm mb-2 text-gray-600">Showing {{ products.length }} entries</span>
-        <table class="border-collapse text-sm">
+        <table class="border-collapse text-sm w-full">
           <thead>
             <tr>
               <th colspan="1" width="100"></th>
-              <th colspan="1" width="150">Product name</th>
+              <th colspan="1" width="200">Product name</th>
               <th colspan="1" width="80">Price</th>
-              <th colspan="1" width="100">Seller name</th>
-              <th colspan="1" width="200">Seller notes</th>
-              <th colspan="1" width="1"></th>
+              <th colspan="1" width="120">Seller name</th>
+              <th colspan="1" width="450">Seller notes</th>
+              <th colspan="1" width="0">Status</th>
+              <th colspan="1" width="50"></th>
             </tr>
           </thead>
           <tbody>
@@ -36,21 +37,22 @@
                 <span>{{ product.description }}</span>
               </td>
               <td>
-                <div class="flex justify-between">
-                  <CustomButton
-                    url="dazd"
-                    @click.prevent
-                    class="bg-green-500 hover:bg-green-400 text-white text-base"
-                  >
-                    <span class="text-sm">Accept</span>
-                  </CustomButton>
-                  <CustomButton
-                    url="dazd"
-                    @click.prevent
-                    class="bg-red-500 hover:bg-red-400 text-white text-base"
-                  >
-                    <span class="text-sm">Deny</span>
-                  </CustomButton>
+                <select class="p-2" :id="`product-status-${product.id}`">
+                  <option :value="product.status">{{ product.status }}</option>
+                  <option v-if="product.status !== 'TO SELL'" value="TO SELL">TO SELL</option>
+                  <option v-if="product.status !== 'TO REVIEW'" value="TO REVIEW">TO REVIEW</option>
+                  <option v-if="product.status !== 'TO DENIED'" value="DENIED">DENIED</option>
+                </select>
+              </td>
+              <td>
+                <div
+                @click="updateProduct"
+                class="px-4 py-2 text-center rounded-sm bg-green-500 text-sm
+                hover:bg-green-400 text-white cursor-pointer"
+                :data-url="product['@id']"
+                :data-id="product.id"
+                >
+                  Update
                 </div>
               </td>
             </tr>
@@ -141,6 +143,18 @@ export default class Dashboard extends Vue {
         this.users = res.data['hydra:member'];
         this.usersLoaded = true;
       });
+  }
+
+  updateProduct(event: { target: HTMLDivElement }): Promise<boolean> {
+    const productId = event.target.dataset.id;
+    const productStatus = document.getElementById(`product-status-${productId}`) as HTMLSelectElement;
+    return axiosService.patch<{ status: string }>(`${event.target.dataset.url}`, { status: productStatus.value }, {
+      headers: {
+        'Content-Type': 'application/merge-patch+json',
+      },
+    })
+      .then(() => true)
+      .catch(() => false);
   }
 }
 </script>

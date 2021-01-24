@@ -35,7 +35,7 @@ export default class Search extends Vue {
   async getProducts(): Promise<ProductModel[] | []> {
     const { q: name } = this.$route.query;
     if (typeof name === 'string' || name === undefined) {
-      const path = name && name !== '' ? `/products?name=${name}` : '/products';
+      const path = name && name !== '' ? `/products?status=TO%20SELL&name=${name}` : '/products?status=TO%20SELL';
       const res = await axiosService.get<{ 'hydra:member': ProductModel[] }>(path)
       if (res) {
         return res.data['hydra:member'];

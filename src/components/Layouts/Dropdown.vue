@@ -57,7 +57,7 @@ export default class Dropdown extends Vue {
   logout(): void {
     localStorage.removeItem('jwt');
     this.$store.dispatch('user', null);
-    this.$router.push('/');
+    this.$router.push('/sign-in');
   }
 }
 </script>

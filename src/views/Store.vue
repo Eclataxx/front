@@ -91,13 +91,14 @@
               </td>
               <td>{{ product.status }}</td>
               <td>
-                <CustomButton
-                url="dazd"
-                @click.prevent
-                class="bg-red-500 hover:bg-red-400 text-white text-base"
+                <div
+                @click="removeProduct"
+                class="px-4 py-2 text-center rounded-sm bg-red-500 text-sm
+                hover:bg-red-400 text-white cursor-pointer"
+                :data-url="product['@id']"
                 >
-                  <span class="text-sm">Remove</span>
-                </CustomButton>
+                  Remove
+                </div>
               </td>
             </tr>
           </tbody>
@@ -141,6 +142,16 @@ export default class Dashboard extends Vue {
     if (response) {
       this.products = response.data.products;
     }
+  }
+
+  removeProduct(event: { target: HTMLDivElement }): Promise<boolean> {
+    return axiosService.remove<ProductModel>(`${event.target.dataset.url}`)
+      .then(async () => {
+        await this.getProducts();
+        this.$forceUpdate();
+        return true;
+      })
+      .catch(() => false);
   }
 
   onSubmit(productData: ProductModel) {
