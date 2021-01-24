@@ -5,22 +5,22 @@ import getBackendUrl from '../lib/BackendUrl';
 import { UserModel } from '../models';
 
 const isJWTNeeded = (path: string, method: string): boolean => {
-  const anonymousPaths = [
-    new RegExp('^(/users)$'),
-    new RegExp('^/products'),
-    new RegExp('^/authentication_token'),
+  const anonymousPaths: [RegExp, string][] = [
+    [new RegExp('^(/users)$'), 'GET'],
+    [new RegExp('^(/users)$'), 'POST'],
+    [new RegExp('^/products'), 'GET'],
+    [new RegExp('^/authentication_token'), 'POST'],
   ];
 
-  const result = anonymousPaths.map((anonymousPath) => {
-    if (anonymousPath.test(path)) {
-      if (anonymousPath.test(path) && method === 'POST') {
-        return true;
-      }
-      return false;
+  const result = anonymousPaths.map(([pathRegex, pathMethod]) => {
+    if (pathRegex.test(path) && pathMethod === method) {
+      return true;
     }
-    return true;
+    return false;
   });
-  return !result.includes(false);
+  // si ça inclut un true ça veut dire que j'ai matché avec une route anonyme
+  // donc pas besoin d'identification
+  return !result.includes(true);
 };
 
 const defaultConfig = (path: string, method: string) => {

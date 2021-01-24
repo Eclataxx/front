@@ -91,15 +91,33 @@
               <td>{{ user.username }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.products.map((product) => product.name).join(', ') }}</td>
-              <td>{{ user.roles.join(', ') }}</td>
+              <td class="flex flex-col" :id="`user-roles-${user.id}`">
+                <div class="flex items-center">
+                  <input class="mr-2" type="checkbox" name="ROLE_USER"
+                  :checked="user.roles.includes('ROLE_USER')">
+                  <label for="ROLE_USER">Utilisateur</label>
+                </div>
+                <div class="flex items-center">
+                  <input class="mr-2" type="checkbox" name="ROLE_SELLER"
+                  :checked="user.roles.includes('ROLE_SELLER')">
+                  <label for="ROLE_SELLER">Vendeur</label>
+                </div>
+                <div class="flex items-center">
+                  <input class="mr-2" type="checkbox" name="ROLE_ADMIN"
+                  :checked="user.roles.includes('ROLE_ADMIN')">
+                  <label for="ROLE_ADMIN">Administrauter</label>
+                </div>
+              </td>
               <td>
-                <CustomButton
-                    url="dazd"
-                    @click.prevent
-                    class="bg-green-500 hover:bg-green-400 text-white text-base"
-                  >
-                    <span class="text-sm">Update</span>
-                </CustomButton>
+                <div
+                @click="updateUser"
+                class="px-4 py-2 text-center rounded-sm bg-green-500 text-sm
+                hover:bg-green-400 text-white cursor-pointer"
+                :data-url="user['@id']"
+                :data-id="user.id"
+                >
+                  Update
+                </div>
               </td>
             </tr>
           </tbody>
@@ -143,6 +161,25 @@ export default class Dashboard extends Vue {
         this.users = res.data['hydra:member'];
         this.usersLoaded = true;
       });
+  }
+
+  updateUser(event: { target: HTMLDivElement }): Promise<boolean> {
+    const userId = event.target.dataset.id;
+    const userRolesElement = document.getElementById(`user-roles-${userId}`) as HTMLTableDataCellElement;
+    const userRoles: string[] = [];
+    Object.values(userRolesElement.querySelectorAll('input')).forEach((input: HTMLInputElement) => {
+      if (input.checked) {
+        userRoles.push(input.name);
+      }
+    });
+    return axiosService.patch<{ roles: string[] }>(`${event.target.dataset.url}`, { roles: userRoles }, {
+      headers: {
+        'Content-Type': 'application/merge-patch+json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    })
+      .then(() => true)
+      .catch(() => false);
   }
 
   updateProduct(event: { target: HTMLDivElement }): Promise<boolean> {
