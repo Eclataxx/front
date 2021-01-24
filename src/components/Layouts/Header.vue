@@ -12,7 +12,9 @@
             class="block lg:hidden cursor-pointer mr-2"
             @click="triggerSideMenu"
           />
-          <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
+          <router-link to="/" class="text-xl lg:text-2xl hover:text-yellow-400">
+            Eclatax
+          </router-link>
         </div>
         <SearchBar id="search-bar" class="hidden lg:block p-2" style="width: 720px" />
         <div class="flex items-center">
@@ -54,44 +56,44 @@
       >
         <router-link
           to="/search?q=macbook"
-          class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
+          class="w-full lg:w-auto hover:text-yellow-400 border-b lg:border-b-0 py-2 border-gray-800
           lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
           >MacBook</router-link
         >
         <router-link
           to="/search?q=iphone"
           class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300 hover:text-yellow-400"
           >iPhone</router-link
         >
         <router-link
           to="/search?q=ipad"
           class="w-full lg:w-auto border-b lg:border-b-0 py-2 border-gray-800
-          lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
+          lg:py-0 px-8 hover:bg-gray-800 transition duration-300 hover:text-yellow-400"
           >iPad</router-link
         >
         <router-link
           to="/search?q=imac"
-          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 hover:text-yellow-400
           border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
           >iMac</router-link
         >
         <router-link
           to="/search?q=computers"
-          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 hover:text-yellow-400
           border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
         >
           Computers
         </router-link>
         <router-link
           to="/search?q=phones"
-          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 hover:text-yellow-400
           border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
           >Phones</router-link
         >
         <router-link
           to="/search?q=tv"
-          class="w-full lg:w-auto border-b lg:border-b-0 py-2
+          class="w-full lg:w-auto border-b lg:border-b-0 py-2 hover:text-yellow-400
           border-gray-800 lg:py-0 px-8 hover:bg-gray-800 transition duration-300"
           >TV</router-link
         >
@@ -103,9 +105,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { mapGetters } from 'vuex';
-import * as axiosService from '../../services/axiosMethods';
 import SearchBar from '../SearchBar.vue';
-import { UserModel } from '../../models';
 import Dropdown from './Dropdown.vue';
 
 @Options({

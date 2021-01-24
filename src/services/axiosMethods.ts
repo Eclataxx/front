@@ -83,9 +83,13 @@ export async function patch<T>(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.request.status === 401) {
+    const { status } = error.request;
+    if (status === 401) {
       store.dispatch('logout');
       router.push('/sign-in');
+    }
+    if (status === 500 || status === 404) {
+      return Promise.reject(error);
     }
     return null;
   },

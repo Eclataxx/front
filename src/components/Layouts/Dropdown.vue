@@ -12,6 +12,14 @@
       <span>Dashboard</span>
     </router-link>
     <router-link
+      to="/store"
+      v-if="user.roles.includes('ROLE_SELLER')"
+      class="py-2 px-4 hover:bg-gray-300 transition duration-300 flex"
+    >
+      <img class="mr-2" src="/images/store.svg" />
+      <span>Store</span>
+    </router-link>
+    <router-link
       to="/orders"
       class="py-2 px-4 hover:bg-gray-300 transition duration-300 flex"
     >

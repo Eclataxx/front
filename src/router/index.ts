@@ -7,6 +7,7 @@ import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
 import Orders from '../views/Orders.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Store from '../views/Store.vue';
 import Header from '../components/Layouts/Header.vue';
 import Footer from '../components/Layouts/Footer.vue';
 import DashboardHeader from '../components/Layouts/DashboardHeader.vue';
@@ -73,6 +74,15 @@ const routes: Array<RouteRecordRaw> = [
       default: SignUp,
       header: Header,
       footer: Footer,
+    },
+  },
+  {
+    path: '/store',
+    name: 'Store',
+    components: {
+      default: Store,
+      header: DashboardHeader,
+      footer: DashboardFooter,
     },
   },
   {

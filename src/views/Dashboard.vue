@@ -30,9 +30,8 @@
             <tr v-for="product in products" :key="product.id" class="hover:bg-gray-100">
               <td><img src="/images/iphone.jpg" /></td>
               <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
+              <td>{{ product.price }}€</td>
               <td>{{ product.submittedBy.username }}</td>
-              <!-- eslint-disable-next-line max-len -->
               <td :title="product.description" class="seller-note">
                 <span>{{ product.description }}</span>
               </td>
