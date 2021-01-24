@@ -4,7 +4,7 @@ import store from '../store';
 import getBackendUrl from '../lib/BackendUrl';
 import { UserModel } from '../models';
 
-const isJWTNeeded = (path: string): boolean => {
+const isJWTNeeded = (path: string, method: string): boolean => {
   const anonymousPaths = [
     new RegExp('^(/users)$'),
     new RegExp('^/products'),
@@ -13,6 +13,9 @@ const isJWTNeeded = (path: string): boolean => {
 
   const result = anonymousPaths.map((anonymousPath) => {
     if (anonymousPath.test(path)) {
+      if (anonymousPath.test(path) && method === 'POST') {
+        return true;
+      }
       return false;
     }
     return true;
@@ -20,8 +23,8 @@ const isJWTNeeded = (path: string): boolean => {
   return !result.includes(false);
 };
 
-const defaultConfig = (path: string) => {
-  const isAuthorizationNeeded = isJWTNeeded(path);
+const defaultConfig = (path: string, method: string) => {
+  const isAuthorizationNeeded = isJWTNeeded(path, method);
   const jwt = localStorage.getItem('jwt');
 
   return {
@@ -34,7 +37,7 @@ const defaultConfig = (path: string) => {
 export async function get<T>(path: string, config?: AxiosRequestConfig):
   Promise<AxiosResponse<T>> {
   const backendUrl = await getBackendUrl();
-  return axios.get(`${backendUrl}${path}`, config || defaultConfig(path));
+  return axios.get(`${backendUrl}${path}`, config || defaultConfig(path, 'GET'));
 }
 
 export async function whoIsLoggedIn(config?: AxiosRequestConfig):
@@ -53,7 +56,7 @@ export async function post<T>(
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<T>> {
   const backendUrl = await getBackendUrl();
-  return axios.post(`${backendUrl}${path}`, body, config || defaultConfig(path));
+  return axios.post(`${backendUrl}${path}`, body, config || defaultConfig(path, 'POST'));
 }
 
 export async function remove<T>(
@@ -61,7 +64,7 @@ export async function remove<T>(
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<any>> {
   const backendUrl = await getBackendUrl();
-  return axios.delete(`${backendUrl}${path}`, config || defaultConfig(path));
+  return axios.delete(`${backendUrl}${path}`, config || defaultConfig(path, 'DELETE'));
 }
 
 export async function put<T>(
@@ -69,7 +72,7 @@ export async function put<T>(
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<any>> {
   const backendUrl = await getBackendUrl();
-  return axios.put(`${backendUrl}${path}`, config || defaultConfig(path));
+  return axios.put(`${backendUrl}${path}`, config || defaultConfig(path, 'PUT'));
 }
 
 export async function patch<T>(
@@ -77,7 +80,7 @@ export async function patch<T>(
   config?: AxiosRequestConfig,
 ): Promise<AxiosResponse<any>> {
   const backendUrl = await getBackendUrl();
-  return axios.patch(`${backendUrl}${path}`, config || defaultConfig(path));
+  return axios.patch(`${backendUrl}${path}`, config || defaultConfig(path, 'PATCH'));
 }
 
 axios.interceptors.response.use(
@@ -87,8 +90,9 @@ axios.interceptors.response.use(
     if (status === 401) {
       store.dispatch('logout');
       router.push('/sign-in');
+      return Promise.reject(error);
     }
-    if (status === 500 || status === 404) {
+    if (status === 500 || status === 404 || status === 403) {
       return Promise.reject(error);
     }
     return null;
