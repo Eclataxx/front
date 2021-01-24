@@ -3,22 +3,32 @@
     class="fixed w-full flex items-center bg-gray-900 z-20 text-white"
     onresize="resizeHandler()"
   >
-    <div class="flex items-center justify-between w-full">
-      <router-link to="/" class="text-xl lg:text-2xl ml-2">Eclatax</router-link>
+    <div class="flex items-center justify-between w-full px-2">
+      <router-link to="/" class="text-xl lg:text-2xl">Eclatax</router-link>
       <div class="flex">
-        <router-link to="/admin/dashboard" class="mr-2 lg:mr-4">
-          <span>Dashboard</span>
-        </router-link>
-        <router-link to="/admin/dashboard" class="mr-2 lg:mr-4">
-          <span>Sign out</span>
-        </router-link>
+        <div class="relative flex items-center w-full dropdown-trigger cursor-pointer py-2">
+          <img src="/images/justin.png" width="32" class="rounded-full mr-2"/>
+          <span>{{ user.email }}</span>
+          <Dropdown :user="user" style="top: 3rem; left: 0" />
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component';
+import { mapGetters } from 'vuex';
+import Dropdown from './Dropdown.vue';
+
+@Options({
+  components: {
+    Dropdown,
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+})
 
 export default class DashboardHeader extends Vue {}
 </script>
@@ -27,13 +37,9 @@ export default class DashboardHeader extends Vue {}
 header {
   height: 3rem;
 }
-a:hover {
-  color: #ecc94b !important;
-  transition: all 0.3s;
-}
 
 #side-menu {
-  margin-top: 46px;
+  margin-top: 56px;
 }
 
 // lg

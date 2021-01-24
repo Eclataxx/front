@@ -2,13 +2,13 @@
   <header class="text-white" onresize="resizeHandler()">
     <div
       id="nav"
-      class="fixed w-full flex flex-col items-start p-2 bg-gray-900 z-20"
+      class="fixed w-full flex flex-col items-start px-2 bg-gray-900 z-20"
     >
       <div class="flex items-center justify-between w-full">
         <div class="flex">
           <img
             id="burger-icon"
-            src="images/menu.svg"
+            src="/images/menu.svg"
             class="block lg:hidden cursor-pointer mr-2"
             @click="triggerSideMenu"
           />
@@ -18,42 +18,27 @@
         <div class="flex items-center">
           <img
             id="search-trigger"
-            src="images/search.svg"
+            src="/images/search.svg"
             class="block lg:hidden cursor-pointer mr-2"
             @click="showSearchBar"
           />
-          <div v-if="user" class="flex items-center mr-2 lg:mr-4">
-            <img src="images/justin.png" width="32" class="rounded-full mr-2"/>
-            <span class="hidden lg:block">{{ user.email }}</span>
+          <div v-if="user" class="relative flex items-center mr-2 lg:mr-4">
+            <div class="flex items-center w-full dropdown-trigger cursor-pointer py-3">
+              <img src="/images/justin.png" width="32" class="rounded-full mr-2"/>
+              <span>{{ user.email }}</span>
+              <Dropdown :user="user" style="top: 3.5rem; left: 0" />
+            </div>
           </div>
-          <router-link v-if="user" to="/orders" class="mr-2 lg:mr-4">
-            <span class="hidden lg:block">Orders</span>
-            <img class="block lg:hidden" src="images/shopping_bag.svg">
-          </router-link>
-          <router-link v-if="!user" to="/sign-in" class="mr-2 lg:mr-4">
+          <router-link v-if="!user" to="/sign-in" class="mr-2 lg:mr-4 py-4">
             <span class="hidden lg:block">Sign In</span>
-            <img class="block lg:hidden" src="images/account_circle.svg" />
+            <img class="block lg:hidden" src="/images/account_circle.svg" />
           </router-link>
-          <router-link v-if="user" to="/cart" class="mr-2 lg:mr-4">
-            <span class="hidden lg:block">Cart</span>
-            <img class="block lg:hidden" src="images/shopping_cart.svg" />
-          </router-link>
-          <router-link v-if="user && user.roles.includes('ROLE_ADMIN')"
-          to="/admin/dashboard" class="mr-2 lg:mr-4">
-            <span class="hidden lg:block">Dashboard</span>
-            <img class="block lg:hidden" src="images/shopping_cart.svg" />
-          </router-link>
-          <div v-if="user" @click="logout"
-          class="mr-2 lg:mr-4 cursor-pointer hover:text-yellow-400">
-            <span class="hidden lg:block">Logout</span>
-            <img class="block lg:hidden" src="images/exit.svg" />
-          </div>
         </div>
       </div>
       <SearchBar
         id="responsive-search"
         placeholder="Rechercher un produit..."
-        class="hidden lg:hidden mt-1 px-2 py-1 w-full"
+        class="hidden lg:hidden mt-1 px-2 py-1 w-full mb-2"
       />
     </div>
     <div
@@ -121,10 +106,12 @@ import { mapGetters } from 'vuex';
 import * as axiosService from '../../services/axiosMethods';
 import SearchBar from '../SearchBar.vue';
 import { UserModel } from '../../models';
+import Dropdown from './Dropdown.vue';
 
 @Options({
   components: {
     SearchBar,
+    Dropdown,
   },
   beforeMount() {
     window.addEventListener('resize', this.resizeHandler);
@@ -160,12 +147,6 @@ export default class Header extends Vue {
     }
   }
 
-  logout(): void {
-    localStorage.removeItem('jwt');
-    this.$store.dispatch('user', null);
-    this.$router.push('/');
-  }
-
   showSearchBar(): boolean {
     const searchBar = document.getElementById(
       'responsive-search',
@@ -175,12 +156,12 @@ export default class Header extends Vue {
 
     if (!isHidden) {
       searchBar.classList.add('hidden');
-      sideMenu.style.marginTop = '46px';
+      sideMenu.style.marginTop = '56px';
       return true;
     }
 
     searchBar.classList.remove('hidden');
-    sideMenu.style.marginTop = '82px';
+    sideMenu.style.marginTop = '100px';
     return false;
   }
 
@@ -224,12 +205,11 @@ export default class Header extends Vue {
 
 <style lang="scss" scoped>
 a:hover {
-  color: #ecc94b !important;
   transition: all 0.3s;
 }
 
 #side-menu {
-  margin-top: 46px;
+  margin-top: 56px;
 }
 
 // lg
