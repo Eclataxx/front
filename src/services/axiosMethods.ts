@@ -88,11 +88,13 @@ export async function patch<T>(
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    const { status } = error.request;
+    const { status, responseURL } = error.request;
     if (status === 401) {
       store.dispatch('logout');
       router.push('/sign-in');
-      return Promise.reject(error);
+      if (responseURL.indexOf('authentication_token')) {
+        return Promise.reject(error);
+      }
     }
     if (status === 500 || status === 404 || status === 403) {
       return Promise.reject(error);
