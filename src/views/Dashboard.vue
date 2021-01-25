@@ -39,9 +39,9 @@
               <td>
                 <select class="p-2" :id="`product-status-${product.id}`">
                   <option :value="product.status">{{ product.status }}</option>
-                  <option v-if="product.status !== 'TO SELL'" value="TO SELL">TO SELL</option>
+                  <option v-if="product.status !== 'VERIFIED'" value="VERIFIED">VERIFIED</option>
                   <option v-if="product.status !== 'TO REVIEW'" value="TO REVIEW">TO REVIEW</option>
-                  <option v-if="product.status !== 'TO DENIED'" value="DENIED">DENIED</option>
+                  <option v-if="product.status !== 'DENIED'" value="DENIED">DENIED</option>
                 </select>
               </td>
               <td>
