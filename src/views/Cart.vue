@@ -60,7 +60,6 @@ export default class Cart extends Vue {
   }
 
   orderCart(): boolean {
-    this.showToast('Thanks for ordering our shit', false)
     if (this.cart && this.cart.products.length) {
       const { user } = this.$store.state;
       if (user) {
