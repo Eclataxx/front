@@ -127,7 +127,7 @@ import Review from '../components/Review.vue';
     Review,
   },
 })
-export default class extends Vue {}
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
