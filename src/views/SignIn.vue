@@ -51,19 +51,27 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useToast } from 'vue-toastification';
 import { Field, Vuemik } from 'vuemik';
 import { UserModel, TokenErrorModel, TokenModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
-import FormError from '../components/FormError.vue';
 
 @Options({
   components: {
     Field,
     Vuemik,
-    FormError,
   },
 })
 export default class SignIn extends Vue {
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  }
+
   onSubmit(userData: UserModel) {
     axiosService
       .post<UserModel | TokenErrorModel | TokenModel>('/authentication_token', userData)
@@ -78,11 +86,7 @@ export default class SignIn extends Vue {
       })
       .catch((error) => {
         const errorData = error.response.data as TokenErrorModel;
-        const formErrorLabel = document.getElementById(
-          'form-error-label',
-        ) as HTMLSpanElement;
-        (formErrorLabel.parentNode as HTMLElement).classList.remove('hidden');
-        formErrorLabel.textContent = errorData.message;
+        this.showToast(errorData.message, true);
       });
   }
 }

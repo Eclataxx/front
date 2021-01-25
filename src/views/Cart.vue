@@ -26,7 +26,7 @@ import { Options, Vue } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import ProductInCart from '../components/ProductInCart.vue';
 import Checkout from '../components/Checkout.vue';
-import { UserModel, CartModel } from '../models';
+import { CartModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
 
 @Options({
@@ -70,10 +70,10 @@ export default class Cart extends Vue {
             this.$forceUpdate();
           });
       }
-      this.showToast('Thanks for ordering our shit', false)
+      this.showToast('Thanks for ordering.', false);
       return true;
     }
-    this.showToast('An error occured', true)
+    this.showToast('An error occurred', true);
     return false;
   }
 
@@ -82,7 +82,7 @@ export default class Cart extends Vue {
     if (error) {
       toast.error(message);
     } else {
-      toast.info(message);
+      toast.success(message);
     }
   }
 
@@ -104,6 +104,7 @@ export default class Cart extends Vue {
             .then(async () => {
               await this.getCart();
               this.$forceUpdate();
+              this.showToast('This product has been removed from your cart.', false);
               return true;
             })
             .catch(() => false);

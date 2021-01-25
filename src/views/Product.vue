@@ -53,6 +53,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { mapGetters } from 'vuex';
+import { useToast } from 'vue-toastification';
 import Tag from '../components/Tag.vue';
 import CustomButton from '../components/CustomButton.vue';
 import InfoText from '../components/InfoText.vue';
@@ -75,6 +76,15 @@ export default class Product extends Vue {
   product: ProductModel | null = null;
 
   loaded: boolean = false;
+
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  }
 
   created() {
     axiosService
@@ -99,8 +109,14 @@ export default class Product extends Vue {
             Authorization: `Bearer ${localStorage.getItem('jwt')}`,
           },
         })
-          .then(() => true)
-          .catch(() => false);
+          .then(() => {
+            this.showToast('This product has been added to your cart.', false);
+            return true;
+          })
+          .catch(() => {
+            this.showToast('An error occurred.', true);
+            return false;
+          });
       }
     }
   }

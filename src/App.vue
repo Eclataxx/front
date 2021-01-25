@@ -85,6 +85,14 @@ export default class App extends Vue {
 </script>
 
 <style lang="postcss">
+.Vue-Toastification__toast--success {
+  background-color: #48bb78 !important;
+}
+
+.Vue-Toastification__toast--error {
+  background-color: #f56565 !important;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

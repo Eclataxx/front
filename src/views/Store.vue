@@ -1,10 +1,6 @@
 <template>
   <div class="dashboard text-left">
     <h1 class="text-3xl mb-4">Dashboard</h1>
-    <FormSuccess class="hidden"><span id="form-success-label">
-      Your product has been submitted to review!
-    </span></FormSuccess>
-    <FormError class="hidden"><span id="form-error-label"></span></FormError>
     <div
       class="flex flex-col rounded-sm border border-gray-400 mb-4"
     >
@@ -111,19 +107,16 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import { Vuemik, Field } from 'vuemik';
+import { useToast } from 'vue-toastification';
 import CustomButton from '../components/CustomButton.vue';
 import * as axiosService from '../services/axiosMethods';
-import { UserModel, ProductModel, ErrorModel } from '../models';
-import FormSuccess from '../components/FormSuccess.vue';
-import FormError from '../components/FormError.vue';
+import { ProductModel } from '../models';
 
 @Options({
   components: {
     CustomButton,
     Vuemik,
     Field,
-    FormSuccess,
-    FormError,
   },
 })
 
@@ -131,6 +124,15 @@ export default class Dashboard extends Vue {
   products: ProductModel[] = [];
 
   loaded: boolean = false;
+
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  }
 
   async created() {
     await this.getProducts();
@@ -149,16 +151,16 @@ export default class Dashboard extends Vue {
       .then(async () => {
         await this.getProducts();
         this.$forceUpdate();
+        this.showToast('This product has been removed from sales.', false);
         return true;
       })
-      .catch(() => false);
+      .catch(() => {
+        this.showToast('An error occurred', true);
+        return false;
+      });
   }
 
   onSubmit(productData: ProductModel) {
-    const formErrorLabel = document.getElementById('form-error-label') as HTMLSpanElement;
-    const formSuccessLabel = document.getElementById('form-success-label') as HTMLSpanElement;
-    const successParent = formSuccessLabel.parentNode as HTMLElement;
-    const errorParent = formErrorLabel.parentNode as HTMLElement;
     const newProduct = {
       ...productData,
       price: +productData.price,
@@ -168,20 +170,12 @@ export default class Dashboard extends Vue {
     axiosService
       .post<ProductModel>('/products', newProduct)
       .then(async () => {
-        if (!(Object.values(errorParent.classList).includes('hidden'))) {
-          errorParent.classList.add('hidden');
-        }
-        successParent.classList.remove('hidden');
         await this.getProducts();
+        this.showToast('Your product has been submitted to review!', false);
         this.$forceUpdate();
       })
-      .catch((error) => {
-        const errorData = error.response.data as ErrorModel;
-        if (!(Object.values(successParent.classList).includes('hidden'))) {
-          successParent.classList.add('hidden');
-        }
-        errorParent.classList.remove('hidden');
-        formErrorLabel.textContent = errorData['hydra:description'] || errorData.detail;
+      .catch(() => {
+        this.showToast('An error occurred', true);
       });
   }
 }
