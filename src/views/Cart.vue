@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useToast } from 'vue-toastification';
 import ProductInCart from '../components/ProductInCart.vue';
 import Checkout from '../components/Checkout.vue';
 import { UserModel, CartModel } from '../models';
@@ -58,15 +59,31 @@ export default class Cart extends Vue {
     }
   }
 
-  orderCart() {
-    const { user } = this.$store.state;
-    if (user) {
-      axiosService
-        .post(`${user['@id']}/order`, {})
-        .then(async () => {
-          await this.getCart();
-          this.$forceUpdate();
-        });
+  orderCart(): boolean {
+    this.showToast('Thanks for ordering our shit', false)
+    if (this.cart && this.cart.products.length) {
+      const { user } = this.$store.state;
+      if (user) {
+        axiosService
+          .post(`${user['@id']}/order`, {})
+          .then(async () => {
+            await this.getCart();
+            this.$forceUpdate();
+          });
+      }
+      this.showToast('Thanks for ordering our shit', false)
+      return true;
+    }
+    this.showToast('An error occured', true)
+    return false;
+  }
+
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.info(message);
     }
   }
 
