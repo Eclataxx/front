@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import * as axiosService from '../services/axiosMethods';
+import store from '../store';
 import Home from '../views/Home.vue';
 import Cart from '../views/Cart.vue';
 import Search from '../views/Search.vue';
@@ -12,7 +14,6 @@ import Header from '../components/Layouts/Header.vue';
 import Footer from '../components/Layouts/Footer.vue';
 import DashboardHeader from '../components/Layouts/DashboardHeader.vue';
 import DashboardFooter from '../components/Layouts/DashboardFooter.vue';
-import MarketPlace from '../views/MarketPlace.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -32,6 +33,7 @@ const routes: Array<RouteRecordRaw> = [
       header: Header,
       footer: Footer,
     },
+    meta: { requiresAuth: true, role: 'ROLE_USER' },
   },
   {
     path: '/search',
@@ -59,6 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       header: Header,
       footer: Footer,
     },
+    meta: { requiresAuth: true, role: 'ROLE_USER' },
   },
   {
     path: '/sign-in',
@@ -67,6 +70,7 @@ const routes: Array<RouteRecordRaw> = [
       header: Header,
       footer: Footer,
     },
+    meta: { signPage: true },
   },
   {
     path: '/sign-up',
@@ -76,6 +80,7 @@ const routes: Array<RouteRecordRaw> = [
       header: Header,
       footer: Footer,
     },
+    meta: { signPage: true },
   },
   {
     path: '/store',
@@ -85,6 +90,7 @@ const routes: Array<RouteRecordRaw> = [
       header: DashboardHeader,
       footer: DashboardFooter,
     },
+    meta: { requiresAuth: true, role: 'ROLE_SELLER' },
   },
   {
     path: '/admin/dashboard',
@@ -94,11 +100,7 @@ const routes: Array<RouteRecordRaw> = [
       header: DashboardHeader,
       footer: DashboardFooter,
     },
-  },
-  {
-    path: '/marketplace',
-    name: 'MarketPlace',
-    component: MarketPlace,
+    meta: { requiresAuth: true, role: 'ROLE_ADMIN' },
   },
 ];
 
@@ -107,20 +109,35 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const auth = {
-    isLogged: false,
-  };
-  console.log(to);
-  if (to.matched.some((route) => route.meta.private) && auth.isLogged) {
-    next({
-      path: '/sign-in',
-      params: {
-        id: 'redirect',
-      },
+router.beforeEach(async (to, from, next) => {
+  const jwt = localStorage.getItem('jwt');
+  if (to.matched.some((route) => route.meta.requiresAuth) && !jwt) {
+    next({ path: '/sign-in' });
+  } else if (jwt && to.matched.some((route) => route.meta.signPage)) {
+    next({ path: '/' });
+  } else if (to.matched.some((route) => route.meta.requiresAuth) && jwt) {
+    const response = await axiosService.whoIsLoggedIn();
+    if (!response) {
+      next({ path: '/' });
+    }
+    const userData = response!.data;
+    store.dispatch('user', userData);
+
+    const isAllowed = to.matched.some((route) => {
+      if (userData.roles.includes(route.meta.role)) {
+        return true;
+      }
+      return false;
     });
+
+    if (isAllowed) {
+      next();
+    } else {
+      next({ path: '/' });
+    }
+  } else {
+    next();
   }
-  next();
 });
 
 export default router;

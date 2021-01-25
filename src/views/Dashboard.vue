@@ -2,7 +2,7 @@
   <div class="dashboard text-left">
     <h1 class="text-3xl mb-4">Dashboard</h1>
     <div v-if="productsLoaded"
-      class="order-card flex flex-col rounded-sm border border-gray-400 mb-4"
+      class="flex flex-col rounded-sm border border-gray-400 mb-4"
     >
       <div class="flex bg-gray-200 justify-between p-4 font-bold">
         Product list

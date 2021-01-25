@@ -22,8 +22,8 @@ import CustomButton from './CustomButton.vue';
 
 @Options({
   props: {
-    price: String,
-    items: String,
+    price: Number,
+    items: Number,
   },
   components: {
     CustomButton,

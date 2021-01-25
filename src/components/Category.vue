@@ -1,7 +1,7 @@
 <template>
   <router-link :to="`/search?q=${query}`" class="
     flex flex-col category border border-gray-400 bg-white p-4
-    transition duration-300 cursor-pointer mr-1 rounded-sm
+    transition duration-300 cursor-pointer mr-1 mb-1 rounded-sm
   ">
     <div class="img-container">
       <img :src="imageSrc" />
@@ -32,8 +32,8 @@ export default class Category extends Vue {}
   }
 
   .img-container {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 999px;
   }
 

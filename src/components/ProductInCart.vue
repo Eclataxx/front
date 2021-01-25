@@ -38,7 +38,7 @@ import CustomButton from './CustomButton.vue';
     CustomButton,
   },
   props: {
-    price: String,
+    price: Number,
     seller: String,
     title: String,
   },

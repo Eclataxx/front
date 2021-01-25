@@ -57,7 +57,7 @@
       </Vuemik>
     </div>
     <div v-if="loaded"
-      class="order-card flex flex-col rounded-sm border border-gray-400 mb-4"
+      class="flex flex-col rounded-sm border border-gray-400 mb-4"
     >
       <div class="flex bg-gray-200 justify-between p-4 font-bold">
         Your products

@@ -2,7 +2,7 @@
   <div v-if="loaded" class="orders pt-16 lg:pt-6">
     <h1 class="text-left text-3xl mb-4">Your Orders</h1>
     <OrderCard
-      class="3mb-4"
+      class="mb-4"
       v-for="order in orders" :key="order.id"
       :date="order.date" :total="order.price" :orderId="order.id"
     >

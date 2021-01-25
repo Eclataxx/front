@@ -3,7 +3,7 @@
     <Carousel class="mt-5"/>
     <section class="mt-10">
       <h2 class="text-2xl text-left">Featured categories</h2>
-      <div class="flex mt-2 overflow-x-hidden overflow-y-none pb-4">
+      <div class="flex mt-2 overflow-x-hidden overflow-y-none pb-4 flex-wrap">
         <Category
           query="macbook"
           image-src="/images/macbook.jpg"
