@@ -36,6 +36,7 @@ import * as axiosService from '../services/axiosMethods';
   provide() {
     return {
       removeFromCart: this.removeFromCart,
+      orderCart: this.orderCart,
     }
   },
 })
@@ -54,6 +55,18 @@ export default class Cart extends Vue {
     const response = await axiosService.get<CartModel>(`/users/${this.$store.state.user.id}/cart`)
     if (response) {
       this.cart = response.data;
+    }
+  }
+
+  orderCart() {
+    const { user } = this.$store.state;
+    if (user) {
+      axiosService
+        .post(`${user['@id']}/order`, {})
+        .then(async () => {
+          await this.getCart();
+          this.$forceUpdate();
+        });
     }
   }
 

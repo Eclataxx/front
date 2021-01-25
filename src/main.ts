@@ -5,5 +5,4 @@ import store from './store';
 import './assets/css/tailwind.css';
 
 const app = createApp(App);
-
 app.use(store).use(router).mount('#app');
