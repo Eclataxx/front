@@ -1,4 +1,6 @@
-import { CartModel, ProductModel, OrderModel } from '.';
+import {
+  CartModel, ProductModel, OrderModel, AddressModel,
+} from '.';
 
 export default interface UserModel {
   '@id': string;
@@ -11,4 +13,5 @@ export default interface UserModel {
   products: ProductModel[];
   orders: OrderModel[];
   cart: CartModel;
+  address: AddressModel,
 };

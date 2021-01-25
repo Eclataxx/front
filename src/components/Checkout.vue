@@ -9,9 +9,10 @@
     <CustomButton
       url=""
       @click.prevent
+      @click="orderCart"
       class="bg-green-500 hover:bg-green-400 text-white text-base py-3 px-2"
     >
-      <span class="font-bold">Checkout</span>
+      <span class="pointer-events-none font-bold">Checkout</span>
     </CustomButton>
   </div>
 </template>
@@ -28,6 +29,7 @@ import CustomButton from './CustomButton.vue';
   components: {
     CustomButton,
   },
+  inject: ['orderCart'],
 })
 
 export default class Checkout extends Vue {

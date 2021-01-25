@@ -9,6 +9,8 @@
           :title="product.name"
           :seller="product.submittedBy.username"
           :price="product.price"
+          :url="cart['@id']"
+          :iri="product['@id']"
         />
         <Checkout class="flex items-center justify-between"
         :price="cart.price" :items="cart.products.length" />
@@ -31,6 +33,12 @@ import * as axiosService from '../services/axiosMethods';
     ProductInCart,
     Checkout,
   },
+  provide() {
+    return {
+      removeFromCart: this.removeFromCart,
+      orderCart: this.orderCart,
+    }
+  },
 })
 
 export default class Cart extends Vue {
@@ -39,10 +47,52 @@ export default class Cart extends Vue {
   loaded: boolean = false;
 
   async created() {
-    const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
+    await this.getCart();
+    this.loaded = true;
+  }
+
+  async getCart() {
+    const response = await axiosService.get<CartModel>(`/users/${this.$store.state.user.id}/cart`)
     if (response) {
-      this.cart = response.data.cart;
-      this.loaded = true;
+      this.cart = response.data;
+    }
+  }
+
+  orderCart() {
+    const { user } = this.$store.state;
+    if (user) {
+      axiosService
+        .post(`${user['@id']}/order`, {})
+        .then(async () => {
+          await this.getCart();
+          this.$forceUpdate();
+        });
+    }
+  }
+
+  removeFromCart(event: { target: HTMLAnchorElement }) {
+    const { url, productIri } = event.target.dataset;
+    const { user } = this.$store.state;
+    if (user && productIri) {
+      if (this.cart) {
+        const products = this.cart.products.map((product) => product['@id']);
+        const productToRemoveIndex = products.indexOf(productIri);
+        if (productToRemoveIndex > -1) {
+          products.splice(productToRemoveIndex, 1);
+          axiosService.patch<{ products: string[] }>(`${url}`, { products }, {
+            headers: {
+              'Content-Type': 'application/merge-patch+json',
+              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+            },
+          })
+            .then(async () => {
+              await this.getCart();
+              this.$forceUpdate();
+              return true;
+            })
+            .catch(() => false);
+        }
+      }
     }
   }
 }

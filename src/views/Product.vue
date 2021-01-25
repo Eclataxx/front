@@ -26,13 +26,14 @@
         <InfoText>Free shipping</InfoText>
         <InfoText>12 months warranty</InfoText>
         <InfoText>Delivery in 6 business days</InfoText>
-        <CustomButton url="" @click.prevent
+        <CustomButton url="" @click.prevent @click="addToCart"
+          :data-url="product['@id']"
           class="
           bg-green-500 hover:bg-green-400 text-white w-64
           text-base py-3 px-2 mt-6
         ">
-          <img src="/images/shopping_cart.svg" class="pr-2">
-          <span>Ajouter au panier ({{ product.price }}€)</span>
+          <img src="/images/shopping_cart_white.svg" class="pointer-events-none pr-2">
+          <span class="pointer-events-none">Ajouter au panier ({{ product.price }}€)</span>
         </CustomButton>
       </div>
     </div>
@@ -51,12 +52,13 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapGetters } from 'vuex';
 import Tag from '../components/Tag.vue';
 import CustomButton from '../components/CustomButton.vue';
 import InfoText from '../components/InfoText.vue';
 import ProductSpec from '../components/ProductSpec.vue';
 import * as axiosService from '../services/axiosMethods';
-import { ProductModel } from '../models';
+import { ProductModel, CartModel } from '../models';
 
 @Options({
   components: {
@@ -64,6 +66,9 @@ import { ProductModel } from '../models';
     Tag,
     CustomButton,
     ProductSpec,
+  },
+  computed: {
+    ...mapGetters(['user']),
   },
 })
 export default class Product extends Vue {
@@ -78,6 +83,26 @@ export default class Product extends Vue {
         this.product = res.data;
         this.loaded = true;
       });
+  }
+
+  addToCart(event: { target: HTMLAnchorElement }) {
+    const { url } = event.target.dataset;
+    const { user } = this.$store.state;
+    if (user) {
+      const cartId = this.$store.state.user.cart['@id'];
+      if (this.product) {
+        const { carts } = this.product;
+        carts.push(cartId);
+        axiosService.patch<{ carts: string[] }>(`${url}`, { carts }, {
+          headers: {
+            'Content-Type': 'application/merge-patch+json',
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          },
+        })
+          .then(() => true)
+          .catch(() => false);
+      }
+    }
   }
 }
 </script>

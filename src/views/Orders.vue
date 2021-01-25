@@ -34,9 +34,9 @@ export default class Home extends Vue {
   loaded: boolean = false;
 
   async created() {
-    const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
+    const response = await axiosService.get<{ 'hydra:member': OrderModel[] }>(`/users/${this.$store.state.user.id}/orders`)
     if (response) {
-      this.orders = response.data.orders;
+      this.orders = response.data['hydra:member'];
       this.loaded = true;
     }
   }

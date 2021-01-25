@@ -9,11 +9,13 @@ import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
 import Orders from '../views/Orders.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Settings from '../views/Settings.vue';
 import Store from '../views/Store.vue';
 import Header from '../components/Layouts/Header.vue';
 import Footer from '../components/Layouts/Footer.vue';
 import DashboardHeader from '../components/Layouts/DashboardHeader.vue';
 import DashboardFooter from '../components/Layouts/DashboardFooter.vue';
+import { UserModel } from '../models';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -102,6 +104,16 @@ const routes: Array<RouteRecordRaw> = [
     },
     meta: { requiresAuth: true, role: 'ROLE_ADMIN' },
   },
+  {
+    path: '/settings',
+    name: 'Settings',
+    components: {
+      default: Settings,
+      header: Header,
+      footer: Footer,
+    },
+    meta: { requiresAuth: true, role: 'ROLE_ADMIN' },
+  },
 ];
 
 const router = createRouter({
@@ -111,20 +123,24 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const jwt = localStorage.getItem('jwt');
+  let userData: UserModel | null = null;
+  if (jwt) {
+    const response = await axiosService.whoIsLoggedIn();
+    if (!response) {
+      next({ path: '/' });
+    } else {
+      userData = response.data;
+      store.dispatch('user', userData);
+    }
+  }
+
   if (to.matched.some((route) => route.meta.requiresAuth) && !jwt) {
     next({ path: '/sign-in' });
   } else if (jwt && to.matched.some((route) => route.meta.signPage)) {
     next({ path: '/' });
   } else if (to.matched.some((route) => route.meta.requiresAuth) && jwt) {
-    const response = await axiosService.whoIsLoggedIn();
-    if (!response) {
-      next({ path: '/' });
-    }
-    const userData = response!.data;
-    store.dispatch('user', userData);
-
     const isAllowed = to.matched.some((route) => {
-      if (userData.roles.includes(route.meta.role)) {
+      if (userData && userData.roles.includes(route.meta.role)) {
         return true;
       }
       return false;

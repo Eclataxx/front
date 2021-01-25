@@ -13,7 +13,7 @@ import { Options, Vue } from 'vue-class-component';
 
 @Options({
   props: {
-    url: String,
+    url: String || null,
   },
 })
 export default class CustomButton extends Vue {}

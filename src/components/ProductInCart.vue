@@ -22,7 +22,8 @@
       </div>
     </div>
     <div class="flex flex-col">
-      <CustomButton to="/cart" class="bg-gray-300 hover:bg-gray-400 text-gray-800">
+      <CustomButton url="" :data-product-iri="iri" @click.prevent @click="removeFromCart"
+      :data-url="url" class="bg-gray-300 hover:bg-gray-400 text-gray-800">
         Remove
       </CustomButton>
     </div>
@@ -38,10 +39,13 @@ import CustomButton from './CustomButton.vue';
     CustomButton,
   },
   props: {
+    iri: String,
     price: Number,
     seller: String,
     title: String,
+    url: String,
   },
+  inject: ['removeFromCart'],
 })
 export default class ProductInCart extends Vue {}
 </script>

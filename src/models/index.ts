@@ -5,6 +5,7 @@ import ErrorModel from './error.model';
 import TokenModel from './token.model';
 import TokenErrorModel from './tokenError.model';
 import CartModel from './cart.model';
+import AddressModel from './address.model';
 
 export {
   ProductModel,
@@ -14,4 +15,5 @@ export {
   TokenModel,
   TokenErrorModel,
   CartModel,
+  AddressModel,
 };

@@ -30,8 +30,6 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import * as axiosService from './services/axiosMethods';
-import { UserModel } from './models';
 import AppError from './components/AppError.vue';
 import SearchBar from './components/SearchBar.vue';
 
@@ -52,17 +50,8 @@ type localStorageApiValues = 'api1' | 'api2' | null;
 export default class App extends Vue {
   error: boolean = false;
 
-  loaded: boolean = false;
-
   api: localStorageApiValues =
     (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api1'
-
-  async beforeCreate() {
-    const response = await axiosService.whoIsLoggedIn();
-    const userData = response ? response.data : null;
-    this.$store.dispatch('user', userData);
-    this.loaded = true;
-  }
 
   errorCaptured(err: Error, instance: App, info: string): boolean {
     this.error = true;
