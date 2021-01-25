@@ -23,9 +23,10 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useToast } from 'vue-toastification';
 import ProductInCart from '../components/ProductInCart.vue';
 import Checkout from '../components/Checkout.vue';
-import { UserModel, CartModel } from '../models';
+import { CartModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
 
 @Options({
@@ -58,15 +59,30 @@ export default class Cart extends Vue {
     }
   }
 
-  orderCart() {
-    const { user } = this.$store.state;
-    if (user) {
-      axiosService
-        .post(`${user['@id']}/order`, {})
-        .then(async () => {
-          await this.getCart();
-          this.$forceUpdate();
-        });
+  orderCart(): boolean {
+    if (this.cart && this.cart.products.length) {
+      const { user } = this.$store.state;
+      if (user) {
+        axiosService
+          .post(`${user['@id']}/order`, {})
+          .then(async () => {
+            await this.getCart();
+            this.$forceUpdate();
+          });
+      }
+      this.showToast('Thanks for ordering.', false);
+      return true;
+    }
+    this.showToast('An error occurred', true);
+    return false;
+  }
+
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
     }
   }
 
@@ -88,6 +104,7 @@ export default class Cart extends Vue {
             .then(async () => {
               await this.getCart();
               this.$forceUpdate();
+              this.showToast('This product has been removed from your cart.', false);
               return true;
             })
             .catch(() => false);

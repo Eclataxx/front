@@ -28,7 +28,8 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { ItemModel } from '../models/carousel/item.model';
+// eslint-disable-next-line import/no-unresolved
+import { ItemModel } from '@/models/carousel/item.model';
 
 export default class Carousel extends Vue {
   currentIndex: number = 0;

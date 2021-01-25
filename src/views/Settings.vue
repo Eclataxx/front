@@ -80,6 +80,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useToast } from 'vue-toastification';
 import { Field, Vuemik } from 'vuemik';
 import * as axiosService from '../services/axiosMethods';
 import { AddressModel, UserModel } from '../models';
@@ -95,6 +96,15 @@ export default class SignUp extends Vue {
 
   loaded: boolean = false;
 
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  }
+
   onSubmit(addressData: AddressModel) {
     const { user } = this.$store.state;
     if (user) {
@@ -105,8 +115,14 @@ export default class SignUp extends Vue {
           Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         },
       })
-        .then(() => true)
-        .catch(() => false);
+        .then(() => {
+          this.showToast('Your address has been updated.', false);
+          return true;
+        })
+        .catch(() => {
+          this.showToast('An error occurred.', true);
+          return false;
+        });
     }
   }
 

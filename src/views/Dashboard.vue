@@ -129,6 +129,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { useToast } from 'vue-toastification';
 import CustomButton from '../components/CustomButton.vue';
 import * as axiosService from '../services/axiosMethods';
 import { ProductModel, UserModel } from '../models';
@@ -146,6 +147,15 @@ export default class Dashboard extends Vue {
   productsLoaded: boolean = false;
 
   usersLoaded: boolean = false;
+
+  showToast(message: string, error: boolean): void {
+    const toast = useToast();
+    if (error) {
+      toast.error(message);
+    } else {
+      toast.success(message);
+    }
+  }
 
   created() {
     axiosService
@@ -178,8 +188,14 @@ export default class Dashboard extends Vue {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
     })
-      .then(() => true)
-      .catch(() => false);
+      .then(() => {
+        this.showToast('This user has been updated.', false);
+        return true;
+      })
+      .catch(() => {
+        this.showToast('An error occurred.', true);
+        return false;
+      });
   }
 
   updateProduct(event: { target: HTMLDivElement }): Promise<boolean> {
@@ -190,8 +206,14 @@ export default class Dashboard extends Vue {
         'Content-Type': 'application/merge-patch+json',
       },
     })
-      .then(() => true)
-      .catch(() => false);
+      .then(() => {
+        this.showToast('This product has been updated.', false);
+        return true;
+      })
+      .catch(() => {
+        this.showToast('An error occurred.', true);
+        return false;
+      });
   }
 }
 </script>
