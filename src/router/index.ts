@@ -12,6 +12,7 @@ import Header from '../components/Layouts/Header.vue';
 import Footer from '../components/Layouts/Footer.vue';
 import DashboardHeader from '../components/Layouts/DashboardHeader.vue';
 import DashboardFooter from '../components/Layouts/DashboardFooter.vue';
+import MarketPlace from '../views/MarketPlace.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -94,11 +95,32 @@ const routes: Array<RouteRecordRaw> = [
       footer: DashboardFooter,
     },
   },
+  {
+    path: '/marketplace',
+    name: 'MarketPlace',
+    component: MarketPlace,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const auth = {
+    isLogged: false,
+  };
+  console.log(to);
+  if (to.matched.some((route) => route.meta.private) && auth.isLogged) {
+    next({
+      path: '/sign-in',
+      params: {
+        id: 'redirect',
+      },
+    });
+  }
+  next();
 });
 
 export default router;

@@ -23,7 +23,7 @@
         </div>
 
         <div class="flex flex-col my-1">
-          <label for="email">Password</label>
+          <label for="password">Password</label>
           <Field
             class="bg-gray-200 p-1 my-1"
             name="password"

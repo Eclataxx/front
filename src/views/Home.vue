@@ -1,6 +1,6 @@
 <template>
   <div class="home pt-16 lg:pt-0">
-    <Carousel />
+    <Carousel class="mt-5"/>
     <section class="mt-10">
       <h2 class="text-2xl text-left">Featured categories</h2>
       <div class="flex mt-2 overflow-x-hidden overflow-y-none pb-4">
@@ -111,7 +111,6 @@
         Whoever the fuck said this, November 25<sup>th</sup> 2020
       </span>
     </section>
-
   </div>
 </template>
 
