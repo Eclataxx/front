@@ -27,7 +27,7 @@
         <InfoText>12 months warranty</InfoText>
         <InfoText>Delivery in 6 business days</InfoText>
         <CustomButton url="" @click.prevent @click="addToCart"
-          :data-id="product['@id']"
+          :data-url="product['@id']"
           class="
           bg-green-500 hover:bg-green-400 text-white w-64
           text-base py-3 px-2 mt-6
@@ -52,12 +52,13 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import { mapGetters } from 'vuex';
 import Tag from '../components/Tag.vue';
 import CustomButton from '../components/CustomButton.vue';
 import InfoText from '../components/InfoText.vue';
 import ProductSpec from '../components/ProductSpec.vue';
 import * as axiosService from '../services/axiosMethods';
-import { ProductModel } from '../models';
+import { ProductModel, CartModel } from '../models';
 
 @Options({
   components: {
@@ -65,6 +66,9 @@ import { ProductModel } from '../models';
     Tag,
     CustomButton,
     ProductSpec,
+  },
+  computed: {
+    ...mapGetters(['user']),
   },
 })
 export default class Product extends Vue {
@@ -82,7 +86,23 @@ export default class Product extends Vue {
   }
 
   addToCart(event: { target: HTMLAnchorElement }) {
-    console.log(event.target.dataset.id)
+    const { url } = event.target.dataset;
+    const { user } = this.$store.state;
+    if (user) {
+      const cartId = this.$store.state.user.cart['@id'];
+      if (this.product) {
+        const { carts } = this.product;
+        carts.push(cartId);
+        axiosService.patch<{ carts: string[] }>(`${url}`, { carts }, {
+          headers: {
+            'Content-Type': 'application/merge-patch+json',
+            Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+          },
+        })
+          .then(() => true)
+          .catch(() => false);
+      }
+    }
   }
 }
 </script>

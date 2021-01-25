@@ -11,4 +11,5 @@ export default interface ProductModel {
   stock: number;
   submittedBy: UserModel;
   validatedBy: UserModel;
+  carts: string[];
 };
