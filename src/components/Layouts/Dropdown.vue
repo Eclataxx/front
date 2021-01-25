@@ -34,6 +34,14 @@
       <img class="mr-2" src="/images/shopping_cart.svg" />
       <span>Cart</span>
     </router-link>
+    <router-link
+      v-if="user"
+      to="/settings"
+      class="py-2 px-4 hover:bg-gray-300 transition duration-300 flex"
+    >
+      <img class="mr-2" src="/images/settings.svg" />
+      <span>Settings</span>
+    </router-link>
     <div
       @click="logout"
       class="cursor-pointer py-2 px-4 hover:bg-gray-300 transition duration-300 flex"

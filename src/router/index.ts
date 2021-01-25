@@ -9,6 +9,7 @@ import SignIn from '../views/SignIn.vue';
 import SignUp from '../views/SignUp.vue';
 import Orders from '../views/Orders.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Settings from '../views/Settings.vue';
 import Store from '../views/Store.vue';
 import Header from '../components/Layouts/Header.vue';
 import Footer from '../components/Layouts/Footer.vue';
@@ -100,6 +101,16 @@ const routes: Array<RouteRecordRaw> = [
       default: Dashboard,
       header: DashboardHeader,
       footer: DashboardFooter,
+    },
+    meta: { requiresAuth: true, role: 'ROLE_ADMIN' },
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    components: {
+      default: Settings,
+      header: Header,
+      footer: Footer,
     },
     meta: { requiresAuth: true, role: 'ROLE_ADMIN' },
   },
