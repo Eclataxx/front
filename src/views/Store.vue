@@ -138,9 +138,9 @@ export default class Dashboard extends Vue {
   }
 
   async getProducts() {
-    const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
+    const response = await axiosService.get<{ 'hydra:member': ProductModel[] }>(`/users/${this.$store.state.user.id}/products`)
     if (response) {
-      this.products = response.data.products;
+      this.products = response.data['hydra:member'];
     }
   }
 

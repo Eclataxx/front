@@ -26,13 +26,14 @@
         <InfoText>Free shipping</InfoText>
         <InfoText>12 months warranty</InfoText>
         <InfoText>Delivery in 6 business days</InfoText>
-        <CustomButton url="" @click.prevent
+        <CustomButton url="" @click.prevent @click="addToCart"
+          :data-id="product['@id']"
           class="
           bg-green-500 hover:bg-green-400 text-white w-64
           text-base py-3 px-2 mt-6
         ">
-          <img src="/images/shopping_cart.svg" class="pr-2">
-          <span>Ajouter au panier ({{ product.price }}€)</span>
+          <img src="/images/shopping_cart_white.svg" class="pointer-events-none pr-2">
+          <span class="pointer-events-none">Ajouter au panier ({{ product.price }}€)</span>
         </CustomButton>
       </div>
     </div>
@@ -78,6 +79,10 @@ export default class Product extends Vue {
         this.product = res.data;
         this.loaded = true;
       });
+  }
+
+  addToCart(event: { target: HTMLAnchorElement }) {
+    console.log(event.target.dataset.id)
   }
 }
 </script>

@@ -39,9 +39,9 @@ export default class Cart extends Vue {
   loaded: boolean = false;
 
   async created() {
-    const response = await axiosService.get<UserModel>(`/users/${this.$store.state.user.id}`)
+    const response = await axiosService.get<CartModel>(`/users/${this.$store.state.user.id}/cart`)
     if (response) {
-      this.cart = response.data.cart;
+      this.cart = response.data;
       this.loaded = true;
     }
   }
