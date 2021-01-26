@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import gql from 'graphql-tag'
 import { ProductModel } from '../models';
 import ProductCard from '../components/ProductCard.vue';
 import * as axiosService from '../services/axiosMethods';
