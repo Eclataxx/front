@@ -7,12 +7,15 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "db1": "json-server --watch ./backend/api-platform.json --port 3004",
-    "db2": "json-server --watch ./backend/prisma.json --port 3005"
+    "db2": "json-server --watch ./backend/prisma.json --port 3005",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "jwt-decode": "^3.1.2",
+    "serve-static": "^1.14.1",
     "tailwindcss": "^1.9.6",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
