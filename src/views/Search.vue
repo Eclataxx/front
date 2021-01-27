@@ -23,6 +23,11 @@ import useBackend from '../composables/useBackend';
   components: {
     ProductCard,
   },
+  watch: {
+    async $route(to, from) {
+      await this.setProducts(to);
+    },
+  },
 })
 
 export default class Search extends Vue {
@@ -34,10 +39,15 @@ export default class Search extends Vue {
 
   async created() {
     await this.backend.get(localStorage.getItem('apiUrl') as string);
-    const { getVerifiedProducts } = this.backend.api.methods;
+    console.log('addd')
     const { q: name } = this.$route.query;
-    this.products = await getVerifiedProducts(name);
+    this.setProducts(name)
     this.loaded = true;
+  }
+
+  setProducts(name: string) {
+    const { getVerifiedProducts } = this.backend.api.methods;
+    this.products = await getVerifiedProducts(name);
   }
 }
 </script>
