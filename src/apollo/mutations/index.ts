@@ -8,7 +8,7 @@ mutation createProduct($product: ProductCreateInput!) {
 }
 `
 
-export const postUsers = gql`
+export const postUser = gql`
 mutation createUser($user: UserCreateInput!) {
     createUser(data: $user) {
         id

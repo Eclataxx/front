@@ -9,10 +9,10 @@ import {
   AddressModel,
 } from '../models';
 import {
-  queryProducts, queryProduct, queryOrders, queryOrder, queryUsers, queryUser,
+  queryProducts, queryProduct, queryUsers, queryUser,
 } from '../apollo/queries'
 import {
-  postUser, postProducts, patchAddress, createOrderFromCart, patchCartProducts, patchUserRoles, patchProductStatus, patchUsers, removeProduct,
+  postUser, postProducts, patchAddress, createOrderFromCart, patchCartProducts, patchUserRoles, patchProductStatus, removeProduct,
 } from '../apollo/mutations'
 
 // HTTP connection to the API
@@ -30,21 +30,21 @@ const apolloClient = new ApolloClient({
   cache,
 })
 provideApolloClient(apolloClient)
-// TODO: promisify, throw on error
+
 export default {
   register: async (user: UserModel) => {
     const { mutate: createUser } = useMutation(postUser)
-    return createUser({ user })
+    return new Promise((resolve, reject) => resolve(createUser({ user })))
   },
   getProducts: async () => {
     const { result } = useQuery(queryProducts)
-    const products = await useResult(result)
-    return products
+    const products = useResult(result)
+    return new Promise((resolve, reject) => resolve({ products }))
   },
   getVerifiedProducts: async () => {
-    const { result } = useQuery(queryUsers)
-    const verifiedProduct = await useResult(result)
-    return verifiedProduct
+    const { result } = useQuery(queryProducts)
+    const products = useResult(result)
+    return new Promise((resolve, reject) => ({ data: products }))
   },
   getProduct: async (id: string) => {
     const { result } = useQuery(queryProduct, { id })
@@ -57,8 +57,8 @@ export default {
     return cart
   },
 
-  createOrderFromCart: async () => useMutation(createOrderFromCart),\
-  patchCartProducts: async (url: string, products: string[]) => {
+  createOrderFromCart: async () => useMutation(createOrderFromCart),
+  patchCartProducts: async (id: string, products: string[]) => {
     const { mutate: updateCart } = useMutation(patchCartProducts)
     return updateCart({ products })
   },
