@@ -30,7 +30,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/vue-file-import.d.ts"  ],
   "exclude": [
     "node_modules"
   ]

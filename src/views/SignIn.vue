@@ -50,11 +50,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import { Field, Vuemik } from 'vuemik';
 import { UserModel, TokenErrorModel, TokenModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -62,7 +63,14 @@ import * as axiosService from '../services/axiosMethods';
     Vuemik,
   },
 })
+
 export default class SignIn extends Vue {
+  backend = setup(() => useBackend());
+
+  async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+  }
+
   showToast(message: string, error: boolean): void {
     const toast = useToast();
     if (error) {
@@ -73,8 +81,8 @@ export default class SignIn extends Vue {
   }
 
   onSubmit(userData: UserModel) {
-    axiosService
-      .post<UserModel | TokenErrorModel | TokenModel>('/authentication_token', userData)
+    const { getToken } = this.backend.api.methods;
+    getToken(userData)
       .then(async (res) => {
         const data = res.data as TokenModel;
         localStorage.setItem('jwt', data.token);

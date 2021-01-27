@@ -9,12 +9,12 @@
       class="fixed inline-block mr-2 align-middle select-none
       transition duration-200 ease-in toggle-wrapper z-50"
     >
-      <span class="text-xs font-bold">Switch API</span>
+      <span class="text-xs font-bold text-gray-500">{{ apiName }}</span>
       <input
         type="checkbox"
         name="toggle"
         id="toggle"
-        :checked="api === 'api2'"
+        :checked="api === 'graphql'"
         @click="switchBackend()"
         class="toggle-checkbox absolute block w-6 h-6
         rounded-full bg-white border-4 appearance-none cursor-pointer"
@@ -29,29 +29,50 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import {
+  Options, setup, Vue,
+} from 'vue-class-component';
+import * as axiosService from './services/axiosMethods';
+import { UserModel } from './models';
 import AppError from './components/AppError.vue';
 import SearchBar from './components/SearchBar.vue';
+import useBackend from './composables/useBackend'
 
-type localStorageApiValues = 'api1' | 'api2' | null;
+type localStorageApiValues = 'api-platform' | 'graphql' | null;
 
 @Options({
   components: {
     SearchBar,
     AppError,
   },
-  watch: {
-    $route(to, from) {
-      this.error = false;
-    },
-  },
 })
 
 export default class App extends Vue {
   error: boolean = false;
 
+  loaded: boolean = false;
+
+  backend = setup(() => useBackend())
+
   api: localStorageApiValues =
-    (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api1'
+    (localStorage.getItem('apiUrl') as localStorageApiValues) || 'api-platform'
+
+  async created() {
+    await this.backend.get(this.api as string)
+
+    const response = await axiosService.whoIsLoggedIn();
+    const userData = response ? response.data : null;
+    this.$store.dispatch('user', userData);
+    this.loaded = true;
+  }
+
+  mounted() {
+    if (localStorage.getItem('apiUrl')) {
+      return;
+    }
+    localStorage.setItem('apiUrl', 'api-platform');
+    this.api = 'api-platform';
+  }
 
   errorCaptured(err: Error, instance: App, info: string): boolean {
     this.error = true;
@@ -63,21 +84,17 @@ export default class App extends Vue {
     return false;
   }
 
-  mounted() {
-    if (localStorage.getItem('apiUrl')) {
-      return;
-    }
-    localStorage.setItem('apiUrl', 'api1');
-    this.api = 'api1';
+  get apiName() {
+    return this.api === 'api-platform' ? 'Api-Platform' : 'GraphQL'
   }
 
-  switchBackend() {
-    if (localStorage.getItem('apiUrl') === 'api1') {
-      localStorage.setItem('apiUrl', 'api2');
-      this.api = 'api2';
+  async switchBackend() {
+    if (localStorage.getItem('apiUrl') === 'api-platform') {
+      localStorage.setItem('apiUrl', 'graphql');
+      this.api = 'graphql';
     } else {
-      localStorage.setItem('apiUrl', 'api1');
-      this.api = 'api1';
+      localStorage.setItem('apiUrl', 'api-platform');
+      this.api = 'api-platform';
     }
     window.location.reload();
   }

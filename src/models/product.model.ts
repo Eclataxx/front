@@ -5,7 +5,7 @@ export default interface ProductModel {
   description: string;
   id: number;
   name: string;
-  orders: [];
+  // orders: [];
   price: number;
   status: string;
   stock: number;

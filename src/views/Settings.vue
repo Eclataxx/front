@@ -79,11 +79,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import { Field, Vuemik } from 'vuemik';
 import * as axiosService from '../services/axiosMethods';
 import { AddressModel, UserModel } from '../models';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -95,6 +96,8 @@ export default class SignUp extends Vue {
   address: AddressModel | null = null;
 
   loaded: boolean = false;
+
+  backend = setup(() => useBackend());
 
   showToast(message: string, error: boolean): void {
     const toast = useToast();
@@ -108,13 +111,9 @@ export default class SignUp extends Vue {
   onSubmit(addressData: AddressModel) {
     const { user } = this.$store.state;
     if (user) {
-      const addressIri = this.$store.state.user.address['@id'];
-      axiosService.patch<AddressModel>(`${addressIri}`, addressData, {
-        headers: {
-          'Content-Type': 'application/merge-patch+json',
-          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        },
-      })
+      const addressId = this.$store.state.user.address.id;
+      const { patchAddress } = this.backend.api.methods;
+      patchAddress(addressId, addressData)
         .then(() => {
           this.showToast('Your address has been updated.', false);
           return true;
@@ -126,7 +125,8 @@ export default class SignUp extends Vue {
     }
   }
 
-  created() {
+  async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
     const { user } = this.$store.state;
     if (user) {
       this.address = user.address;

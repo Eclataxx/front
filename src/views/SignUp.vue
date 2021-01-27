@@ -95,11 +95,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import { Field, Vuemik } from 'vuemik';
 import * as axiosService from '../services/axiosMethods';
 import { UserModel, ErrorModel } from '../models';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -108,6 +109,8 @@ import { UserModel, ErrorModel } from '../models';
   },
 })
 export default class SignUp extends Vue {
+  backend = setup(() => useBackend());
+
   showToast(message: string, error: boolean): void {
     const toast = useToast();
     if (error) {
@@ -117,10 +120,14 @@ export default class SignUp extends Vue {
     }
   }
 
+  async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+  }
+
   onSubmit(userData: UserModel) {
-    axiosService
-      .post<UserModel>('/users', userData)
-      .then((res) => {
+    const { postUsers } = this.backend.api.methods;
+    postUsers(userData)
+      .then(() => {
         this.showToast('You are now signed up!', false);
         this.$router.push('/sign-in');
       })

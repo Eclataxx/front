@@ -128,17 +128,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import CustomButton from '../components/CustomButton.vue';
 import * as axiosService from '../services/axiosMethods';
 import { ProductModel, UserModel } from '../models';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
     CustomButton,
   },
 })
+
 export default class Dashboard extends Vue {
   products: ProductModel[] = [];
 
@@ -147,6 +149,8 @@ export default class Dashboard extends Vue {
   productsLoaded: boolean = false;
 
   usersLoaded: boolean = false;
+
+  backend = setup(() => useBackend())
 
   showToast(message: string, error: boolean): void {
     const toast = useToast();
@@ -157,16 +161,17 @@ export default class Dashboard extends Vue {
     }
   }
 
-  created() {
-    axiosService
-      .get<{ 'hydra:member': ProductModel[] }>('/products')
+  async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+    const { getProducts, getUsers } = this.backend.api.methods;
+
+    getProducts()
       .then((res) => {
         this.products = res.data['hydra:member'];
         this.productsLoaded = true;
       });
 
-    axiosService
-      .get<{ 'hydra:member': UserModel[] }>('/users')
+    getUsers()
       .then((res) => {
         this.users = res.data['hydra:member'];
         this.usersLoaded = true;
@@ -177,17 +182,13 @@ export default class Dashboard extends Vue {
     const userId = event.target.dataset.id;
     const userRolesElement = document.getElementById(`user-roles-${userId}`) as HTMLTableDataCellElement;
     const userRoles: string[] = [];
+    const { patchUserRoles } = this.backend.api.methods;
     Object.values(userRolesElement.querySelectorAll('input')).forEach((input: HTMLInputElement) => {
       if (input.checked) {
         userRoles.push(input.name);
       }
     });
-    return axiosService.patch<{ roles: string[] }>(`${event.target.dataset.url}`, { roles: userRoles }, {
-      headers: {
-        'Content-Type': 'application/merge-patch+json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-    })
+    return patchUserRoles(event.target.dataset.id, userRoles)
       .then(() => {
         this.showToast('This user has been updated.', false);
         return true;
@@ -201,11 +202,9 @@ export default class Dashboard extends Vue {
   updateProduct(event: { target: HTMLDivElement }): Promise<boolean> {
     const productId = event.target.dataset.id;
     const productStatus = document.getElementById(`product-status-${productId}`) as HTMLSelectElement;
-    return axiosService.patch<{ status: string }>(`${event.target.dataset.url}`, { status: productStatus.value }, {
-      headers: {
-        'Content-Type': 'application/merge-patch+json',
-      },
-    })
+    const { patchProductStatus } = this.backend.api.methods;
+
+    return patchProductStatus(event.target.dataset.id, productStatus.value)
       .then(() => {
         this.showToast('This product has been updated.', false);
         return true;

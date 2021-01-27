@@ -40,12 +40,12 @@ export default class Carousel extends Vue {
     {
       alt: 'Broken Ipad',
       imgSrc: '/images/ipad.jpg',
-      to: '/product',
+      to: '/search?q=ipad',
     },
     {
       alt: 'Broken Imac',
       imgSrc: '/images/imac.jpg',
-      to: '/product',
+      to: '/search?q=imac',
     },
   ]
 
