@@ -70,7 +70,7 @@ export default class Cart extends Vue {
       const { createOrderFromCart } = this.backend.api.methods;
       const { user } = this.$store.state;
       if (user) {
-        createOrderFromCart(user['@id'])
+        createOrderFromCart(user.id)
           .then(async () => {
             await this.getCart();
             this.$forceUpdate();

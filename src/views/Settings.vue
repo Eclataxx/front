@@ -111,9 +111,9 @@ export default class SignUp extends Vue {
   onSubmit(addressData: AddressModel) {
     const { user } = this.$store.state;
     if (user) {
-      const addressIri = this.$store.state.user.address['@id'];
+      const addressId = this.$store.state.user.address.id;
       const { patchAddress } = this.backend.api.methods;
-      patchAddress(addressIri, addressData)
+      patchAddress(addressId, addressData)
         .then(() => {
           this.showToast('Your address has been updated.', false);
           return true;

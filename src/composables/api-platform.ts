@@ -27,7 +27,7 @@ const getProduct = async (productId: string): Promise<ProductModel> => {
 }
 
 const getCart = async (userId: string) => axiosService.get<CartModel>(`/users/${userId}/cart`);
-const createOrderFromCart = async (userIri: string) => axiosService.post(`${userIri}/order`, {});
+const createOrderFromCart = async (userId: string) => axiosService.post(`/users/${userId}/order`, {});
 const patchCartProducts = async (url: string, products: string[]) => axiosService.patch<{ products: string[] }>(`${url}`, { products }, {
   headers: {
     'Content-Type': 'application/merge-patch+json',
@@ -36,21 +36,22 @@ const patchCartProducts = async (url: string, products: string[]) => axiosServic
 });
 const getUsers = async () => axiosService
   .get<{ 'hydra:member': UserModel[] }>('/users');
-const patchUserRoles = async (url: string, userRoles: string[]) => axiosService.patch<{ roles: string[] }>(`${url}`, { roles: userRoles }, {
-  headers: {
-    'Content-Type': 'application/merge-patch+json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  },
-});
-const patchProductStatus = async (url: string, productStatusValue: string) => axiosService
-  .patch<{ status: string }>(`${url}`, { status: productStatusValue }, {
+const patchUserRoles = async (id: string, userRoles: string[]) => axiosService
+  .patch<{ roles: string[] }>(`/users/${id}`, { roles: userRoles }, {
+    headers: {
+      'Content-Type': 'application/merge-patch+json',
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    },
+  });
+const patchProductStatus = async (id: string, productStatusValue: string) => axiosService
+  .patch<{ status: string }>(`/products/${id}`, { status: productStatusValue }, {
     headers: {
       'Content-Type': 'application/merge-patch+json',
     },
   });
 const getUserOrders = async (userId: string) => axiosService.get<{ 'hydra:member': OrderModel[] }>(`/users/${userId}/orders`);
-const patchAddress = async (addressIri: string, addressData: AddressModel) => axiosService
-  .patch<AddressModel>(`${addressIri}`, addressData, {
+const patchAddress = async (addressId: string, addressData: AddressModel) => axiosService
+  .patch<AddressModel>(`/addresses/${addressId}`, addressData, {
     headers: {
       'Content-Type': 'application/merge-patch+json',
       Authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -60,7 +61,7 @@ const getToken = async (userData: UserModel) => axiosService
   .post<UserModel | TokenErrorModel | TokenModel>('/authentication_token', userData);
 const postUsers = async (userData: UserModel) => axiosService.post<UserModel>('/users', userData);
 const getUserProducts = async (userId: string) => axiosService.get<{ 'hydra:member': ProductModel[] }>(`/users/${userId}/products`);
-const removeProduct = async (url: string) => axiosService.remove<ProductModel>(`${url}`);
+const removeProduct = async (id: string) => axiosService.remove<ProductModel>(`/products/${id}`);
 const postProducts = async (product: ProductModel) => axiosService.post<ProductModel>('/products', product);
 
 export default {

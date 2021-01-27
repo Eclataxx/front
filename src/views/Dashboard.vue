@@ -188,7 +188,7 @@ export default class Dashboard extends Vue {
         userRoles.push(input.name);
       }
     });
-    return patchUserRoles(event.target.dataset.url, userRoles)
+    return patchUserRoles(event.target.dataset.id, userRoles)
       .then(() => {
         this.showToast('This user has been updated.', false);
         return true;
@@ -204,7 +204,7 @@ export default class Dashboard extends Vue {
     const productStatus = document.getElementById(`product-status-${productId}`) as HTMLSelectElement;
     const { patchProductStatus } = this.backend.api.methods;
 
-    return patchProductStatus(event.target.dataset.url, productStatus.value)
+    return patchProductStatus(event.target.dataset.id, productStatus.value)
       .then(() => {
         this.showToast('This product has been updated.', false);
         return true;

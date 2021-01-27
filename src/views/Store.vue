@@ -92,6 +92,7 @@
                 class="px-4 py-2 text-center rounded-sm bg-red-500 text-sm
                 hover:bg-red-400 text-white cursor-pointer"
                 :data-url="product['@id']"
+                :data-id="product.id"
                 >
                   Remove
                 </div>
@@ -155,7 +156,7 @@ export default class Dashboard extends Vue {
   removeProduct(event: { target: HTMLDivElement }): Promise<boolean> {
     const { removeProduct } = this.backend.api.methods;
 
-    return removeProduct(event.target.dataset.url)
+    return removeProduct(event.target.dataset.id)
       .then(async () => {
         await this.getProducts();
         this.$forceUpdate();
