@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import OrderedProductCard from '../components/OrderedProductCard.vue';
 import OrderCard from '../components/OrderCard.vue';
 import { UserModel, OrderModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -33,8 +34,13 @@ export default class Home extends Vue {
 
   loaded: boolean = false;
 
+  backend = setup(() => useBackend());
+
   async created() {
-    const response = await axiosService.get<{ 'hydra:member': OrderModel[] }>(`/users/${this.$store.state.user.id}/orders`)
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+    const { getUserOrders } = this.backend.api.methods;
+    const userId = this.$store.state.user.id;
+    const response = await getUserOrders(userId)
     if (response) {
       this.orders = response.data['hydra:member'];
       this.loaded = true;

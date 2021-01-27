@@ -7,8 +7,7 @@ type method<T> = (...args: any) => T;
 type MethodDict<T> = Record<string, method<T>>
 
 interface State {
-    methods: MethodDict<
-        Object | Promise<AxiosResponse<any>> >;
+    methods: MethodDict<Promise<any> >;
 }
 
 export default () => {
@@ -16,7 +15,7 @@ export default () => {
 
   async function get(apiName: string) {
     console.log('get', apiName)
-    api.methods = apiName === 'api-platform' ? apiPlatformMethods : gqlMethods
+    api.methods = apiPlatformMethods;
   }
 
   return {

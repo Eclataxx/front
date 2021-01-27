@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { mapGetters } from 'vuex';
 import { useToast } from 'vue-toastification';
 import Tag from '../components/Tag.vue';
@@ -60,6 +60,7 @@ import InfoText from '../components/InfoText.vue';
 import ProductSpec from '../components/ProductSpec.vue';
 import * as axiosService from '../services/axiosMethods';
 import { ProductModel, CartModel } from '../models';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -77,6 +78,8 @@ export default class Product extends Vue {
 
   loaded: boolean = false;
 
+  backend = setup(() => useBackend());
+
   showToast(message: string, error: boolean): void {
     const toast = useToast();
     if (error) {
@@ -86,13 +89,13 @@ export default class Product extends Vue {
     }
   }
 
-  created() {
-    axiosService
-      .get<ProductModel>(`/products/${this.$route.params.id}`)
-      .then((res) => {
-        this.product = res.data;
-        this.loaded = true;
-      });
+  async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+    const { getProduct } = this.backend.api.methods;
+    const productId = this.$route.params.id;
+    this.product = await getProduct(productId);
+
+    this.loaded = true;
   }
 
   addToCart(event: { target: HTMLAnchorElement }) {

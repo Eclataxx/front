@@ -22,12 +22,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { useToast } from 'vue-toastification';
 import ProductInCart from '../components/ProductInCart.vue';
 import Checkout from '../components/Checkout.vue';
 import { CartModel } from '../models';
 import * as axiosService from '../services/axiosMethods';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -47,13 +48,18 @@ export default class Cart extends Vue {
 
   loaded: boolean = false;
 
+  backend = setup(() => useBackend());
+
   async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
     await this.getCart();
     this.loaded = true;
   }
 
   async getCart() {
-    const response = await axiosService.get<CartModel>(`/users/${this.$store.state.user.id}/cart`)
+    const { getCart } = this.backend.api.methods;
+    const userId = this.$store.state.user.id;
+    const response = await getCart(userId);
     if (response) {
       this.cart = response.data;
     }
@@ -61,10 +67,10 @@ export default class Cart extends Vue {
 
   orderCart(): boolean {
     if (this.cart && this.cart.products.length) {
+      const { createOrderFromCart } = this.backend.api.methods;
       const { user } = this.$store.state;
       if (user) {
-        axiosService
-          .post(`${user['@id']}/order`, {})
+        createOrderFromCart(user['@id'])
           .then(async () => {
             await this.getCart();
             this.$forceUpdate();
@@ -94,13 +100,9 @@ export default class Cart extends Vue {
         const products = this.cart.products.map((product) => product['@id']);
         const productToRemoveIndex = products.indexOf(productIri);
         if (productToRemoveIndex > -1) {
+          const { patchCartProducts } = this.backend.api.methods;
           products.splice(productToRemoveIndex, 1);
-          axiosService.patch<{ products: string[] }>(`${url}`, { products }, {
-            headers: {
-              'Content-Type': 'application/merge-patch+json',
-              Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-            },
-          })
+          patchCartProducts(url, products)
             .then(async () => {
               await this.getCart();
               this.$forceUpdate();

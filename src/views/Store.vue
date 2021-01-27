@@ -105,12 +105,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import { Vuemik, Field } from 'vuemik';
 import { useToast } from 'vue-toastification';
 import CustomButton from '../components/CustomButton.vue';
 import * as axiosService from '../services/axiosMethods';
 import { ProductModel } from '../models';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
@@ -125,6 +126,8 @@ export default class Dashboard extends Vue {
 
   loaded: boolean = false;
 
+  backend = setup(() => useBackend());
+
   showToast(message: string, error: boolean): void {
     const toast = useToast();
     if (error) {
@@ -135,19 +138,24 @@ export default class Dashboard extends Vue {
   }
 
   async created() {
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
     await this.getProducts();
     this.loaded = true;
   }
 
   async getProducts() {
-    const response = await axiosService.get<{ 'hydra:member': ProductModel[] }>(`/users/${this.$store.state.user.id}/products`)
+    // getUserProducts!
+    const { getUserProducts } = this.backend.api.methods;
+    const response = await getUserProducts(this.$store.state.user.id);
     if (response) {
       this.products = response.data['hydra:member'];
     }
   }
 
   removeProduct(event: { target: HTMLDivElement }): Promise<boolean> {
-    return axiosService.remove<ProductModel>(`${event.target.dataset.url}`)
+    const { removeProduct } = this.backend.api.methods;
+
+    return removeProduct(event.target.dataset.url)
       .then(async () => {
         await this.getProducts();
         this.$forceUpdate();
@@ -167,8 +175,8 @@ export default class Dashboard extends Vue {
       status: 'TO REVIEW',
       submittedBy: this.$store.state.user['@id'],
     };
-    axiosService
-      .post<ProductModel>('/products', newProduct)
+    const { postProducts } = this.backend.api.methods;
+    postProducts(newProduct)
       .then(async () => {
         await this.getProducts();
         this.showToast('Your product has been submitted to review!', false);

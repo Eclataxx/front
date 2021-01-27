@@ -12,44 +12,31 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, setup } from 'vue-class-component';
 import gql from 'graphql-tag'
 import { ProductModel } from '../models';
 import ProductCard from '../components/ProductCard.vue';
 import * as axiosService from '../services/axiosMethods';
+import useBackend from '../composables/useBackend';
 
 @Options({
   components: {
     ProductCard,
   },
-  watch: {
-    async $route(to, from) {
-      this.products = await this.getProducts();
-    },
-  },
 })
+
 export default class Search extends Vue {
   products: ProductModel[] = [];
 
   loaded: boolean = false;
 
-  async getProducts(): Promise<ProductModel[] | []> {
-    const { q: name } = this.$route.query;
-    if (typeof name === 'string' || name === undefined) {
-      const path = name && name !== '' ? `/products?status=VERIFIED&name=${name}` : '/products?status=VERIFIED';
-      const res = await axiosService.get<{ 'hydra:member': ProductModel[] }>(path)
-      if (res) {
-        return res.data['hydra:member'];
-      }
-
-      return [];
-    }
-
-    return [];
-  }
+  backend = setup(() => useBackend());
 
   async created() {
-    this.products = await this.getProducts();
+    await this.backend.get(localStorage.getItem('apiUrl') as string);
+    const { getVerifiedProducts } = this.backend.api.methods;
+    const { q: name } = this.$route.query;
+    this.products = await getVerifiedProducts(name);
     this.loaded = true;
   }
 }
