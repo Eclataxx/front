@@ -45,11 +45,6 @@ type localStorageApiValues = 'api-platform' | 'graphql' | null;
     SearchBar,
     AppError,
   },
-  watch: {
-    $route(to, from) {
-      this.error = false;
-    },
-  },
 })
 
 export default class App extends Vue {

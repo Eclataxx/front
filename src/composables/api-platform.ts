@@ -64,7 +64,6 @@ const removeProduct = async (url: string) => axiosService.remove<ProductModel>(`
 const postProducts = async (product: ProductModel) => axiosService.post<ProductModel>('/products', product);
 
 export default {
-  register,
   getProducts,
   getProduct,
   getVerifiedProducts,
