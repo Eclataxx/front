@@ -3,10 +3,16 @@ import {
 } from '@vue/apollo-composable'
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
 import {
+  UserModel, ProductModel,
+  CartModel, TokenModel,
+  TokenErrorModel, OrderModel,
+  AddressModel,
+} from '../models';
+import {
   queryProducts, queryProduct, queryOrders, queryOrder, queryUsers, queryUser,
 } from '../apollo/queries'
 import {
-  postProducts, patchAddress, createOrderFromCart, patchCartProducts, patchUserRoles, patchProductStatus, patchUsers, removeProduct,
+  postUser, postProducts, patchAddress, createOrderFromCart, patchCartProducts, patchUserRoles, patchProductStatus, patchUsers, removeProduct,
 } from '../apollo/mutations'
 
 // HTTP connection to the API
@@ -26,25 +32,9 @@ const apolloClient = new ApolloClient({
 provideApolloClient(apolloClient)
 // TODO: promisify, throw on error
 export default {
-  getUsers: async () => {
-    const { result } = await useQuery(queryUsers)
-    const users = await useResult(result)
-    return users
-  },
-  getUserProduct: async (id: string) => {
-    const { result } = useQuery(queryUser, { id })
-    const userProduct = await useResult(result)
-    return userProduct
-  },
-  getCart: async (id: string) => {
-    const { result } = useQuery(queryUser, { id })
-    const cart = await useResult(result)
-    return cart
-  },
-  getProduct: async (id: string) => {
-    const { result } = useQuery(queryProduct, { id })
-    const product = await useResult(result)
-    return product
+  register: async (user: UserModel) => {
+    const { mutate: createUser } = useMutation(postUser)
+    return createUser({ user })
   },
   getProducts: async () => {
     const { result } = useQuery(queryProducts)
@@ -56,32 +46,68 @@ export default {
     const verifiedProduct = await useResult(result)
     return verifiedProduct
   },
-
-  getOrders: async () => {
-    const { result } = useQuery(queryOrders)
-    const orders = await useResult(result)
-    return orders
+  getProduct: async (id: string) => {
+    const { result } = useQuery(queryProduct, { id })
+    const product = await useResult(result)
+    return product
   },
-  getOrder: async (id: string) => {
-    const { result } = useQuery(queryOrder, { id })
-    const order = await useResult(result)
-    return order
+  getCart: async (id: string) => {
+    const { result } = useQuery(queryUser, { id })
+    const cart = await useResult(result)
+    return cart
   },
-  // getToken: async () => {
-  //   const { result } = useQuery()
-  //   const token = await useResult(result)
-  //   return token
-  // },
 
-  postProducts: async () => {
+  createOrderFromCart: async () => useMutation(createOrderFromCart),\
+  patchCartProducts: async (url: string, products: string[]) => {
+    const { mutate: updateCart } = useMutation(patchCartProducts)
+    return updateCart({ products })
+  },
+
+  getUsers: async () => {
+    const { result } = await useQuery(queryUsers)
+    const users = await useResult(result)
+    return users
+  },
+
+  patchUserRoles: async () => {
+    const { mutate: updateUser } = useMutation(patchUserRoles)
+    return updateUser({})
+  },
+  patchProductStatus: async () => {
+    const { mutate: updateProduct } = useMutation(patchProductStatus)
+    return updateProduct({})
+  },
+  getUserOrders: async (id: string) => {
+    const { result } = useQuery(queryUser, { id })
+    const userOrder = await useResult(result)
+    return userOrder
+  },
+
+  patchAddress: async () => {
+    const { mutate: updateAddress } = useMutation(patchAddress)
+    return updateAddress({})
+  },
+  getToken: async () => {
+    const { result } = useQuery()
+    const token = await useResult(result)
+    return token
+  },
+  postUsers: async (user: UserModel) => {
+    const { mutate: createUser } = useMutation(postUser)
+    return createUser({ user })
+  },
+
+  getUserProducts: async (id: string) => {
+    const { result } = useQuery(queryUser, { id })
+    const userProduct = await useResult(result)
+    return userProduct
+  },
+  removeProduct: async () => {
+    const { mutate: deleteProduct } = useMutation(removeProduct)
+    return deleteProduct({})
+  },
+  postProducts: async (product: ProductModel) => {
     const { mutate: newProduct } = useMutation(postProducts)
-    newProduct({})
+    return newProduct({ product })
   },
-  createOrderFromCart: async () => useMutation(createOrderFromCart),
-  patchCartProducts: async () => useMutation(patchCartProducts),
-  patchUserRoles: async () => useMutation(patchUserRoles),
-  patchProductStatus: async () => useMutation(patchProductStatus),
-  patchAddress: async () => useMutation(patchAddress),
-  patchUsers: async () => useMutation(patchUsers),
-  removeProduct: async () => useMutation(removeProduct),
 }

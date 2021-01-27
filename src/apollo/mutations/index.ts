@@ -1,8 +1,16 @@
 import gql from 'graphql-tag'
 
 export const postProducts = gql`
-mutation createProduct() {
-    createProduct() {
+mutation createProduct($product: ProductCreateInput!) {
+    createProduct(data: $product) {
+        id
+    }
+}
+`
+
+export const postUsers = gql`
+mutation createUser($user: UserCreateInput!) {
+    createUser(data: $user) {
         id
     }
 }
