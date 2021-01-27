@@ -28,12 +28,13 @@ const getProduct = async (productId: string): Promise<ProductModel> => {
 
 const getCart = async (userId: string) => axiosService.get<CartModel>(`/users/${userId}/cart`);
 const createOrderFromCart = async (userId: string) => axiosService.post(`/users/${userId}/order`, {});
-const patchCartProducts = async (url: string, products: string[]) => axiosService.patch<{ products: string[] }>(`${url}`, { products }, {
-  headers: {
-    'Content-Type': 'application/merge-patch+json',
-    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-  },
-});
+const patchCartProducts = async (id: string, products: string[]) => axiosService
+  .patch<{ products: string[] }>(`/carts/${id}`, { products }, {
+    headers: {
+      'Content-Type': 'application/merge-patch+json',
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    },
+  });
 const getUsers = async () => axiosService
   .get<{ 'hydra:member': UserModel[] }>('/users');
 const patchUserRoles = async (id: string, userRoles: string[]) => axiosService

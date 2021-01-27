@@ -94,6 +94,7 @@ export default class Cart extends Vue {
 
   removeFromCart(event: { target: HTMLAnchorElement }) {
     const { url, productIri } = event.target.dataset;
+    const cartId = url!.split('/').reverse()[0];
     const { user } = this.$store.state;
     if (user && productIri) {
       if (this.cart) {
@@ -102,7 +103,7 @@ export default class Cart extends Vue {
         if (productToRemoveIndex > -1) {
           const { patchCartProducts } = this.backend.api.methods;
           products.splice(productToRemoveIndex, 1);
-          patchCartProducts(url, products)
+          patchCartProducts(cartId, products)
             .then(async () => {
               await this.getCart();
               this.$forceUpdate();
